@@ -1,3 +1,7 @@
 <script type="text/javascript" src="ADRCollectionViewer.ui.js"></script>
 <script type="text/javascript" src="ADRCollectionViewer.js"></script>
+<script type="text/javascript" src="Overview.ui.js"></script>
+<script type="text/javascript" src="Overview.js"></script>
+<script type="text/javascript" src="Manage.ui.js"></script>
+<script type="text/javascript" src="Manage.js"></script>
 <script type="text/javascript" src="Datastreams.js"></script>

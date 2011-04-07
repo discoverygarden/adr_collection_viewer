@@ -14,5 +14,14 @@
 ADRCollectionViewer = Ext.extend(ADRCollectionViewerUi, {
     initComponent: function() {
         ADRCollectionViewer.superclass.initComponent.call(this);
+        if(typeof(Overview) == "function" && typeof(Overview.prototype) == "object") {
+            this.add(new Overview());
+        }
+        if(typeof(Content) == "function" && typeof(Content.prototype) == "object") {
+            this.add(new Content());
+        }
+        if(typeof(Manage) == "function" && typeof(Manage.prototype) == "object") {
+            this.add(new Manage());
+        }        
     }
 });

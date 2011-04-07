@@ -14,7 +14,7 @@
 function adr_collection_viewer_menu() {
   $items = array();
 
-  $items['adrcollection/view'] = array(
+  $items['adrcollection/view/%'] = array(
     'page callback' => 'adr_collection_viewer_show',
     'access arguments' => array('view detailed list of content'),
     'type' => MENU_NORMAL_ITEM,
@@ -37,7 +37,6 @@ function adr_collection_viewer_show($collection) {
   module_load_include('inc', 'adr_collection_viewer', 'ADRCollection');
   $pid = $collection;
   $viewer = new ADRCollection($pid);
-  $viewer->render();
-  return "<div id='content-fedora'></div>";
+  return $viewer->render();
 }
 

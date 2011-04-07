@@ -9,4 +9,7 @@ Ext.onReady(function(){
     Ext.get('content-fedora').update('');
     Ext.get('content-fedora').dom.id = "adr-collection-viewer";
     Ext.QuickTips.init();
+    new ADRCollectionViewer({
+        renderTo: 'adr-collection-viewer'
+    }).show();
 });

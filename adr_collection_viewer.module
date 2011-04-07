@@ -1,0 +1,43 @@
+<?php
+
+// $Id$
+
+/**
+ * @file
+ *
+ */
+
+/**
+ *
+ * @return array 
+ */
+function adr_collection_viewer_menu() {
+  $items = array();
+
+  $items['adrcollection/view'] = array(
+    'page callback' => 'adr_collection_viewer_show',
+    'access arguments' => array('view detailed list of content'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['adrcollection/ajax/getObjectProperties'] = array(
+    'page callback' => 'adr_collection_viewer_get_object_properties',
+    'access arguments' => array('view detailed list of content'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  return $items;
+}
+
+/**
+ *
+ * @param string $collection
+ */
+function adr_collection_viewer_show($collection) {
+  module_load_include('inc', 'adr_collection_viewer', 'ADRCollection');
+  $pid = $collection;
+  $viewer = new ADRCollection($pid);
+  $viewer->render();
+  return "<div id='content-fedora'></div>";
+}
+

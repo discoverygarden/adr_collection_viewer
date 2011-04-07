@@ -1,0 +1,3 @@
+<script type="text/javascript" src="ADRCollectionViewer.ui.js"></script>
+<script type="text/javascript" src="ADRCollectionViewer.js"></script>
+<script type="text/javascript" src="Datastreams.js"></script>

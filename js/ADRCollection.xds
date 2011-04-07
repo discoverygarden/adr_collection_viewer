@@ -1,0 +1,211 @@
+{
+    "name": "ADRCollection.xds",
+    "projectId": "10E5C4FC-826F-4EF8-9FBB-3378659FEF99",
+    "settings": {
+        "urlPrefix": "http://localhost/",
+        "spacesToIndent": 4,
+        "codeGenFormat": "Class",
+        "extPath": "http://extjs.cachefly.net/ext-3.3.1/",
+        "exportPath": ".",
+        "lineEnding": "LF",
+        "instantiateStore": true,
+        "exportXDSFiles": true,
+        "genTimestamps": true
+    },
+    "xdsVersion": "1.1.2",
+    "components": [
+        {
+            "id": "MyTabPanel",
+            "cid": "tabpanel",
+            "jsClass": "ADRCollectionViewer",
+            "snapToGrid": 10,
+            "userConfig": {
+                "activeTab": 1,
+                "width": 400,
+                "height": 250
+            },
+            "cn": [
+                {
+                    "id": "MyPanel",
+                    "cid": "panel",
+                    "jsClass": "MyPanel",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "title": "Overview",
+                        "autoLoad": "{\nurl: \"/adrcollection/ajax/getdescription\",\nparams: {  \npid: ADRCollection.pid\n}\n}"
+                    }
+                },
+                {
+                    "id": "MyPanel1",
+                    "cid": "panel",
+                    "jsClass": "MyPanel1",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "title": "Content",
+                        "autoLoad": "{\nurl: \"/adrcollection/ajax/getcontent\",\nparams: {  \npid: ADRCollection.pid\n}\n}"
+                    }
+                },
+                {
+                    "id": "MyPanel2",
+                    "cid": "panel",
+                    "jsClass": "MyPanel2",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "title": "Manage"
+                    },
+                    "cn": [
+                        {
+                            "id": "MyPanel3",
+                            "cid": "panel",
+                            "jsClass": "MyPanel3",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "title": "Collection Properties",
+                                "frame": true
+                            },
+                            "cn": [
+                                {
+                                    "id": "MyToolbar",
+                                    "cid": "toolbar",
+                                    "jsClass": "MyToolbar",
+                                    "dock": "fbar",
+                                    "snapToGrid": 10,
+                                    "cn": [
+                                        {
+                                            "id": "MyButton2",
+                                            "cid": "button",
+                                            "jsClass": "MyButton2",
+                                            "snapToGrid": 10,
+                                            "userConfig": {
+                                                "text": "Edit Metadata"
+                                            }
+                                        },
+                                        {
+                                            "id": "MyButton1",
+                                            "cid": "button",
+                                            "jsClass": "MyButton1",
+                                            "snapToGrid": 10,
+                                            "userConfig": {
+                                                "text": "Edit Permissions"
+                                            }
+                                        },
+                                        {
+                                            "id": "MyButton",
+                                            "cid": "button",
+                                            "jsClass": "MyButton",
+                                            "snapToGrid": 10,
+                                            "userConfig": {
+                                                "text": "Delete Collection"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "MyPanel4",
+                            "cid": "panel",
+                            "jsClass": "MyPanel4",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "title": "Manage Collection Datastreams",
+                                "frame": "-ext-undefined-",
+                                "footer": true
+                            },
+                            "cn": [
+                                {
+                                    "id": "MyToolbar1",
+                                    "cid": "toolbar",
+                                    "jsClass": "MyToolbar1",
+                                    "dock": "tbar",
+                                    "snapToGrid": 10
+                                },
+                                {
+                                    "id": "MyDataView",
+                                    "cid": "dataview",
+                                    "jsClass": "MyDataView",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "itemSelector": "div",
+                                        "store": "Datastreams",
+                                        "tpl": "<tpl for=\".\">\n<div class=\"adr-manage-datastream-img-block\">\n<img src='{img_url}' title='label' class=\"adr-manage-datastream-img\">\n<div class=\"adr-manage-datastream-label\">{dsid}</div></div>\n</tpl>"
+                                    }
+                                },
+                                {
+                                    "id": "MyPagingToolbar",
+                                    "cid": "pagingtoolbar",
+                                    "jsClass": "MyPagingToolbar",
+                                    "dock": "bbar",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "store": "(none)"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "stores": [
+        {
+            "id": "MyStore",
+            "cid": "jsonstore",
+            "jsClass": "Datastreams",
+            "snapToGrid": 10,
+            "userConfig": {
+                "storeId": "Datastreams",
+                "baseParams": "{\npid: ADRCollection.pid\n}",
+                "url": "/adrcollection/ajax/getdatastreams"
+            },
+            "cn": [
+                {
+                    "id": "MyField",
+                    "cid": "datafield",
+                    "jsClass": "MyField",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "dsid"
+                    }
+                },
+                {
+                    "id": "MyField1",
+                    "cid": "datafield",
+                    "jsClass": "MyField1",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "label"
+                    }
+                },
+                {
+                    "id": "MyField2",
+                    "cid": "datafield",
+                    "jsClass": "MyField2",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "img_url"
+                    }
+                },
+                {
+                    "id": "MyField3",
+                    "cid": "datafield",
+                    "jsClass": "MyField3",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "mime"
+                    }
+                },
+                {
+                    "id": "MyField4",
+                    "cid": "datafield",
+                    "jsClass": "MyField4",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "download_url"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -63,7 +63,14 @@ function adr_collection_viewer_menu() {
     'access callback' => 'user_access',
     'type' => MENU_NORMAL_ITEM,
   );
-  
+
+  $items['adrcollection/ajax/getAllowedMIMETypes'] = array(
+    'page callback' => 'adr_collection_viewer_get_allowed_mime_types',
+    'access arguments' => array('add fedora datastreams'),
+    'access callback' => 'user_access',
+    'type' => MENU_NORMAL_ITEM,
+  );
+
   return $items;
 }
 

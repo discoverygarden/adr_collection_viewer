@@ -6,4 +6,10 @@
 <script type="text/javascript" src="Manage.js"></script>
 <script type="text/javascript" src="Content.ui.js"></script>
 <script type="text/javascript" src="Content.js"></script>
+<script type="text/javascript" src="AddDatastream.ui.js"></script>
+<script type="text/javascript" src="AddDatastream.js"></script>
+<script type="text/javascript" src="FileUploadField.ui.js"></script>
+<script type="text/javascript" src="FileUploadField.js"></script>
 <script type="text/javascript" src="Datastreams.js"></script>
+<script type="text/javascript" src="ControlGroups.js"></script>
+<script type="text/javascript" src="MIMETypes.js"></script>

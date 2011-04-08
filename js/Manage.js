@@ -53,7 +53,7 @@ Manage = Ext.extend(ManageUi, {
         }
 
         add.addListener('click', function(button, event) {
-            var window = new AddFileWindow();
+            var window = new AddDatastream();
             window.show(this);
         });
         download.addListener('click', function(button, event) {

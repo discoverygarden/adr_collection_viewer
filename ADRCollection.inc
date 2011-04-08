@@ -56,9 +56,13 @@ class ADRCollection {
 
     $data_stores = array(
       'Datastreams.js',
+      'ControlGroups.js',
+      'MIMETypes.js',
     );
 
     $custom_components = array(
+      'FileUploadField.ui.js',
+      'FileUploadField.js',
     );
 
     $main_viewer = array(
@@ -119,6 +123,8 @@ class ADRCollection {
   private function includeManagePanel() {
     drupal_add_js("{$this->path}/js/Manage.ui.js");
     drupal_add_js("{$this->path}/js/Manage.js");
+    drupal_add_js("{$this->path}/js/AddDatastream.ui.js");
+    drupal_add_js("{$this->path}/js/AddDatastream.js");
   }
 
   /**

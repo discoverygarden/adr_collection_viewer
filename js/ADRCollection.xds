@@ -299,6 +299,137 @@
                 "title": "Content"
             },
             "userXType": "Content"
+        },
+        {
+            "id": "MyWindow",
+            "cid": "window",
+            "jsClass": "AddDatastream",
+            "snapToGrid": 10,
+            "userConfig": {
+                "title": "My Window",
+                "width": 600,
+                "height": 250,
+                "padding": "10px",
+                "autoHeight": true
+            },
+            "userXType": "addDatastream",
+            "cn": [
+                {
+                    "id": "MyForm",
+                    "cid": "form",
+                    "jsClass": "MyForm",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "title": "-ext-undefined-",
+                        "frame": "-ext-undefined-",
+                        "unstyled": true,
+                        "fileUpload": true
+                    },
+                    "cn": [
+                        {
+                            "id": "MyTextField",
+                            "cid": "textfield",
+                            "jsClass": "MyTextField",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "name": "dsid",
+                                "allowBlank": false,
+                                "fieldLabel": "Datastream ID"
+                            }
+                        },
+                        {
+                            "id": "MyTextField1",
+                            "cid": "textfield",
+                            "jsClass": "MyTextField1",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "fieldLabel": "Label",
+                                "anchor": "100%",
+                                "name": "label",
+                                "allowBlank": false
+                            }
+                        },
+                        {
+                            "id": "MyCombo",
+                            "cid": "combobox",
+                            "jsClass": "MyCombo",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "fieldLabel": "Control Group",
+                                "anchor": "100%",
+                                "name": "control_group",
+                                "store": "ControlGroups",
+                                "allowBlank": false,
+                                "displayField": "type",
+                                "mode": "local",
+                                "forceSelection": true,
+                                "editable": false,
+                                "triggerAction": "all",
+                                "valueField": "value",
+                                "submitValue": true,
+                                "value": "-ext-undefined-"
+                            }
+                        },
+                        {
+                            "id": "MyCombo1",
+                            "cid": "combobox",
+                            "jsClass": "MyCombo1",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "fieldLabel": "MIME Type",
+                                "anchor": "100%",
+                                "name": "mime_type",
+                                "store": "MIMETypes",
+                                "allowBlank": false,
+                                "forceSelection": true,
+                                "triggerAction": "all",
+                                "displayField": "mime",
+                                "editable": false
+                            }
+                        },
+                        {
+                            "id": "MyUserComponent",
+                            "cid": "usercomponent",
+                            "jsClass": "FileUploadField",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "jsClass": "FileUploadField",
+                                "userXType": "fileuploadfield",
+                                "fieldLabel": "Upload File"
+                            },
+                            "userComponent": "MyTextField2"
+                        },
+                        {
+                            "id": "MyToolbar2",
+                            "cid": "toolbar",
+                            "jsClass": "MyToolbar2",
+                            "dock": "fbar",
+                            "snapToGrid": 10,
+                            "cn": [
+                                {
+                                    "id": "MyButton5",
+                                    "cid": "button",
+                                    "jsClass": "MyButton5",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "text": "Add"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "MyTextField2",
+            "cid": "textfield",
+            "jsClass": "FileUploadField",
+            "snapToGrid": 10,
+            "userConfig": {
+                "allowBlank": false
+            },
+            "userXType": "fileuploadfield"
         }
     ],
     "stores": [
@@ -309,7 +440,7 @@
             "snapToGrid": 10,
             "userConfig": {
                 "storeId": "Datastreams",
-                "baseParams": "{\npid: (window.location.pathname.split('/')[3])\n}",
+                "baseParams": "{\npid: decodeURIComponent(window.location.pathname.split('/')[3])\n}",
                 "url": "/adrcollection/ajax/getdatastreams",
                 "root": "data"
             },
@@ -357,6 +488,60 @@
                     "snapToGrid": 10,
                     "userConfig": {
                         "name": "download_url"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "MyStore1",
+            "cid": "arraystore",
+            "jsClass": "ControlGroups",
+            "snapToGrid": 10,
+            "userConfig": {
+                "storeId": "ControlGroups",
+                "data": "[[\"Inline XML (X)\", \"X\"], [\"Managed Resource (M)\", \"M\"], [\"Redirect (R)\", \"R\"], [\"External Reference (E)\", \"E\"]]",
+                "autoLoad": true
+            },
+            "cn": [
+                {
+                    "id": "MyField5",
+                    "cid": "datafield",
+                    "jsClass": "MyField5",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "type"
+                    }
+                },
+                {
+                    "id": "MyField6",
+                    "cid": "datafield",
+                    "jsClass": "MyField6",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "value"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "MyStore2",
+            "cid": "jsonstore",
+            "jsClass": "MIMETypes",
+            "snapToGrid": 10,
+            "userConfig": {
+                "storeId": "MIMETypes",
+                "url": "/adrcollection/ajax/getAllowedMIMETypes",
+                "baseParams": "{ pid: decodeURIComponent(window.location.pathname.split('/')[3])\n}",
+                "autoLoad": true
+            },
+            "cn": [
+                {
+                    "id": "MyField7",
+                    "cid": "datafield",
+                    "jsClass": "MyField7",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "mime"
                     }
                 }
             ]

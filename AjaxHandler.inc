@@ -255,4 +255,62 @@ class AjaxHandler {
     }
   }
 
+  /**
+   *
+   * @return array
+   */
+  public function getAllowedMIMETypes() {
+    $content_model = &$this->getContentModel();
+    $mime_types = $content_model->getMimetypes();
+    $response = array();
+    foreach ($mime_types as $type) {
+      $response[] = array('mime' => $type);
+    }
+    return $response;
+  }
+
+  /**
+   *
+   * @param <type> $values
+   * @return <type>
+   */
+  public function addDatastream($values) {
+    $controls = array(
+      'Inline XML (X)' => "X",
+      'Managed Resource (M)' => "M",
+      'Redirect (R)' => "R",
+      'External Reference (E)' => "E",
+    );
+    $dsid = $values['dsid'];
+    $label = $values['label'];
+    $control = $controls[$values['control_group']];
+    $mime = $values['mime_type'];
+    $file = array_shift($_FILES);
+    if ($file['type'] != $mime) {
+      return array('success' => false, 'msg' => 'Mime type of file does not match the mime type specified.');
+    }
+    else {
+      if ($this->item->add_datastream_from_file($file['tmp_name'], $dsid, $label, $mime, $control)) {
+        return array('success' => true, 'msg' => 'Successfully added datastream.');
+      }
+      else {
+        return array('success' => false, 'msg' => 'Failed to add datastream.');
+      }
+    }
+  }
+
+  /**
+   * Deletes datastreams from the object.
+   *
+   * @param string $dsid
+   * @return array
+   */
+  public function deleteDatastream($dsid) {
+    if ($this->item->purge_datastream($dsid)) {
+      return json_encode(array('success' => true, 'msg' => 'Successfully Deleted datastream.'));
+    }
+    else {
+      return json_encode(array('success' => false, 'msg' => 'Failed to deleted file.'));
+    }
+  }
 }

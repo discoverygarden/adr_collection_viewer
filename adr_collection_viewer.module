@@ -14,8 +14,15 @@
 function adr_collection_viewer_menu() {
   $items = array();
 
-  $items['adrcollection/view/%'] = array(
+  $items['adrcollection/view'] = array(
+    'title' => 'Viewer',
     'page callback' => 'adr_collection_viewer_show',
+    'access arguments' => array('view detailed list of content'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  $items['adrcollection/ajax/getDescription'] = array(
+    'page callback' => 'adr_collection_viewer_get_description',
     'access arguments' => array('view detailed list of content'),
     'type' => MENU_NORMAL_ITEM,
   );
@@ -25,7 +32,7 @@ function adr_collection_viewer_menu() {
     'access arguments' => array('view detailed list of content'),
     'type' => MENU_NORMAL_ITEM,
   );
-  
+
   return $items;
 }
 
@@ -33,10 +40,20 @@ function adr_collection_viewer_menu() {
  *
  * @param string $collection
  */
-function adr_collection_viewer_show($collection) {
+function adr_collection_viewer_show($pid) {
+  theme();
   module_load_include('inc', 'adr_collection_viewer', 'ADRCollection');
-  $pid = $collection;
   $viewer = new ADRCollection($pid);
   return $viewer->render();
 }
 
+
+function adr_collection_viewer_get_description($pid) {
+  $pid = $_REQUEST['pid'];
+  if (isset($pid)) {
+    module_load_include('inc', 'adr_collection_viewer', 'AjaxHandler');
+    $handler = new AjaxHandler($pid);
+    $reponse = $handler->getDescription();
+    echo $reponse;
+  }
+}

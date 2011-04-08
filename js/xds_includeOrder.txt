@@ -4,4 +4,6 @@
 <script type="text/javascript" src="Overview.js"></script>
 <script type="text/javascript" src="Manage.ui.js"></script>
 <script type="text/javascript" src="Manage.js"></script>
+<script type="text/javascript" src="Content.ui.js"></script>
+<script type="text/javascript" src="Content.js"></script>
 <script type="text/javascript" src="Datastreams.js"></script>

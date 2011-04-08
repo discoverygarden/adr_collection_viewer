@@ -11,4 +11,20 @@
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
 
+h1.adr-collection-title {
+    font-size: 3em;
+}
 
+table.adr-collection-description {
+    padding: 5px;
+}
+
+th.adr-collection-description {
+    vertical-align: top;
+    text-align: center;
+    padding: 10px;
+}
+
+td.adr-collection-description {
+    padding: 10px;
+}

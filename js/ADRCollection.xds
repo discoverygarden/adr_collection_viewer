@@ -21,8 +21,9 @@
             "snapToGrid": 10,
             "userConfig": {
                 "activeTab": 2,
-                "width": 400,
-                "height": 250
+                "width": 960,
+                "height": 900,
+                "id": "adr-collection-tabpanel"
             }
         },
         {
@@ -32,7 +33,8 @@
             "snapToGrid": 10,
             "userConfig": {
                 "title": "Overview",
-                "autoLoad": "{\nurl: \"/adrcollection/ajax/getdescription\",\nparams: {  \npid: ADRCollection.pid\n}\n}"
+                "autoLoad": "{\nurl: \"/adrcollection/ajax/getdescription\",\nparams: {  \npid: (window.location.pathname.split('/')[3])\n}\n}",
+                "id": "adr-collection-overview-tab"
             },
             "userXType": "overview"
         },
@@ -202,8 +204,9 @@
             "snapToGrid": 10,
             "userConfig": {
                 "storeId": "Datastreams",
-                "baseParams": "{\npid: ADRCollection.pid\n}",
-                "url": "/adrcollection/ajax/getdatastreams"
+                "baseParams": "{\npid: (window.location.pathname.split('/')[3])\n}",
+                "url": "/adrcollection/ajax/getdatastreams",
+                "root": "data"
             },
             "cn": [
                 {

@@ -39,6 +39,8 @@ class ADRCollection {
    */
   public function __construct($pid = NULL) {
     $this->pid = isset($pid) ? $pid : variable_get('fedora_repository_pid', 'islandora:top');
+    module_load_include('inc', 'adr_collection_viewer', 'Collection');
+    $this->collection = new Collection($this->pid);
     $this->path = drupal_get_path('module', 'adr_collection_viewer');
   }
 
@@ -87,7 +89,7 @@ class ADRCollection {
    * @return boolean
    */
   private function canShowOverviewPanel() {
-    return isset($this->item->datastreams['MODS']);
+    return $this->collection->hasMetadata();
   }
 
   /**
@@ -131,11 +133,51 @@ class ADRCollection {
   }
 
   /**
+   * Gets the html for this collections title.
+   *
+   * @return string
+   */
+  private function getCollectionTitle() {
+    $label = $this->collection->getLabel();
+    return <<<EOT
+    <h1 class="adr-collection-title">{$label}</h1>
+EOT;
+  }
+
+  /**
+   * Gets the html for this collections description.
+   *
+   * @return string
+   */
+  private function getCollectionDescription() {
+    $description = $this->collection->getDescription();
+    if (empty($description)) {
+      $description = "Since most collections don't have a description I'm putting the Lorem ipsum, here to give a view of what it will look like with descriptions. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+      $description = "$description $description";
+    }
+    $description = substr($description, 0, 350);
+    if (isset($description)) {
+      return "<table class='adr-collection-description'>
+              <tr><th class='adr-collection-description'>Description</th><td class='adr-collection-description'>{$description}<a href='#adr-collection-title' id='adr-show-overview-link'> [Click for more ...]</a></td></tr>
+              </table>";
+    }
+    return NULL;
+  }
+  
+  /**
    *
    */
   public function render() {
     $this->includeRequiredScripts(); // Javascript all the way!
-    return "<div id='content-fedora'></div>";
+    $title = $this->getCollectionTitle();
+    $description = $this->getCollectionDescription();
+    return <<<EOT
+    $title
+    $description
+    <div id='content-fedora'>
+      
+    </div>
+EOT;
   }
 
 }

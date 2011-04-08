@@ -33,6 +33,37 @@ function adr_collection_viewer_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
 
+  $items['adrcollection/ajax/setObjectProperties'] = array(
+    'page callback' => 'adr_collection_viewer_set_object_properties',
+    'access arguments' => array('edit fedora meta data'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['adrcollection/ajax/deleteObject'] = array(
+    'page callback' => 'adr_collection_viewer_delete_object',
+    'access arguments' => array('edit fedora meta data'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['adrcollection/ajax/getDatastreams'] = array(
+    'page callback' => 'adr_collection_viewer_get_datastreams',
+    'access arguments' => array('view detailed list of content'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['adrcollection/ajax/addDatastream'] = array(
+    'page callback' => 'adr_collection_viewer_add_datastream',
+    'access arguments' => array('add fedora datastreams'),
+    'access callback' => 'user_access',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['adrcollection/ajax/removeDatastream'] = array(
+    'page callback' => 'adr_collection_viewer_remove_datastream',
+    'access arguments' => array('purge objects and datastreams'),
+    'access callback' => 'user_access',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
   return $items;
 }
 
@@ -55,5 +86,117 @@ function adr_collection_viewer_get_description($pid) {
     $handler = new AjaxHandler($pid);
     $reponse = $handler->getDescription();
     echo $reponse;
+  }
+}
+
+/**
+ *
+ */
+function adr_collection_viewer_get_datastreams() {
+  $pid = $_REQUEST['pid'];
+  $start = isset($_REQUEST['start']) ? $_REQUEST['start'] : 0;
+  $limit = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 33;
+  if (isset($pid)) {
+    module_load_include('inc', 'adr_collection_viewer', 'AjaxHandler');
+    $handler = new AjaxHandler($pid);
+    $reponse = $handler->getDatastreams($start, $limit);
+    echo json_encode($reponse);
+  }
+}
+
+/**
+ *
+ */
+function adr_collection_viewer_add_datastream() {
+  $pid = $_REQUEST['pid'];
+  if (isset($pid)) {
+    module_load_include('inc', 'adr_collection_viewer', 'AjaxHandler');
+    $handler = new AjaxHandler($pid);
+    $reponse = $handler->addDatastream($_POST);
+    echo json_encode($reponse);
+  }
+}
+
+/**
+ *
+ */
+function adr_collection_viewer_remove_datastream() {
+  $pid = $_REQUEST['pid'];
+  $dsid = $_REQUEST['dsid'];
+  if (isset($pid) && isset($dsid)) {
+    module_load_include('inc', 'adr_collection_viewer', 'AjaxHandler');
+    $handler = new AjaxHandler($pid);
+    $reponse = $handler->deleteDatastream($dsid);
+    echo json_encode($reponse);
+  }
+}
+
+/**
+ * Ajax request to get the allowed mime types for datastreams as defined by this fedora object's content model.
+ *
+ * Responds with a JSON object describing success or failure, and the allowed MIME Types for datastreams.
+ *
+ * Example: { success: true, msg: 'message', data: '{ { mime: 'image/jpg'}, ... }' }
+ */
+function adr_collection_viewer_get_allowed_mime_types() {
+  $pid = $_REQUEST['pid'];
+  if (isset($pid)) {
+    module_load_include('inc', 'adr_collection_viewer', 'AjaxHandler');
+    $handler = new AjaxHandler($pid);
+    $reponse = $handler->getAllowedMIMETypes();
+    echo json_encode($reponse);
+  }
+}
+
+/**
+ * Ajax request to get the properties of an fedora object.
+ *
+ * Responds with a JSON object describing success or failure, and the objects
+ * properties.
+ *
+ * Example: { success: true, msg: 'message', data: '{ { label: ''}, ... }' }
+ */
+function adr_collection_viewer_get_object_properties() {
+  $pid = $_REQUEST['pid'];
+  if (isset($pid)) {
+    module_load_include('inc', 'adr_collection_viewer', 'AjaxHandler');
+    $handler = new AjaxHandler($pid);
+    $reponse = $handler->getObjectProperties();
+    echo json_encode($reponse);
+  }
+}
+
+/**
+ * Ajax request to set the properties of an fedora object.
+ *
+ * Responds with a JSON object describing success or failure, and the objects
+ * properties.
+ *
+ * Example: { success: true, msg: 'message', data: '{ { label: ''}, ... }' }
+ */
+function adr_collection_viewer_set_object_properties() {
+  $pid = $_REQUEST['pid'];
+  if (isset($pid)) {
+    module_load_include('inc', 'adr_collection_viewer', 'AjaxHandler');
+    $handler = new AjaxHandler($pid);
+    $response = $handler->setObjectProperties($_POST);
+    echo json_encode($response);
+  }
+}
+
+/**
+ * Ajax request to delete a fedora object.
+ *
+ * Responds with a JSON object describing success or failure.
+ *
+ * Example: { success: true, msg: 'message' }
+ */
+function adr_collection_viewer_delete_object() {
+  $pid = $_REQUEST['pid'];
+  if (isset($pid)) {
+    module_load_include('inc', 'adr_collection_viewer', 'AjaxHandler');
+    $handler = new AjaxHandler($pid);
+    $response = $handler->deleteObject();
+    echo json_encode($response);
   }
 }

@@ -100,6 +100,41 @@ class AjaxHandler {
   }
 
   /**
+   *
+   * @return array
+   */
+  public function getDatastreams($start, $limit) {
+    $data = array();
+    $count = 0;
+    $end = (isset($limit)) ? $start + $limit : NULL;
+    foreach ($this->item->datastreams as $dsid => $attr) {
+      if ($count >= $start && (empty($end) || $count < $end)) {
+        module_load_include('inc', 'adr_basic_viewer', 'Thumbnail');
+        $thumbnail = new Thumbnail($this->item, $dsid);
+        $stream['dsid'] = $dsid;
+        $stream['label'] = $attr['label'];
+        $stream['img_url'] = $thumbnail->getUrl();
+        $stream['download_url'] = $this->getDatastreamDownloadURL($dsid, $attr['label']);
+        $stream['mime'] = $attr['MIMEType'];
+        $data[] = $stream;
+      }
+      $count++;
+    }
+    return array("success" => TRUE, "data" => $data, "total" => $count);
+  }
+
+  /**
+   *
+   * @global string $base_url
+   * @param string $dsid
+   */
+  private function getDatastreamDownloadURL($dsid, $label) {
+    global $base_url;
+    return "$base_url/fedora/repository/object_download/" . drupal_urlencode($this->pid) . '/' . $dsid . '/' . drupal_urlencode(preg_replace('/\//i', '${1}_', $label));
+  }
+
+
+  /**
    * Gets the fedora object's label.
    *
    * @return string

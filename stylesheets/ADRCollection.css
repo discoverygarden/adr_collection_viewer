@@ -28,3 +28,31 @@ th.adr-collection-description {
 td.adr-collection-description {
     padding: 10px;
 }
+
+.adr-add-file-icon {
+    background-image:url(../images/icon/add.png);
+}
+
+.adr-edit-file-icon {
+    background-image:url(../images/icon/edit.gif);
+}
+
+.adr-view-file-icon {
+    background-image:url(../images/icon/view.gif);
+}
+
+.adr-download-file-icon {
+    background-image:url(../images/icon/blue_down.png);
+}
+
+.adr-delete-file-icon {
+    background-image:url(../images/icon/remove.png);
+}
+
+.x-list-selected {
+    background-color: #ffff00;
+}
+
+.x-list-over {
+    background-color: #eeeebb;
+}

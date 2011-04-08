@@ -23,7 +23,8 @@
                 "activeTab": 2,
                 "width": 960,
                 "height": 900,
-                "id": "adr-collection-tabpanel"
+                "id": "adr-collection-tabpanel",
+                "border": false
             }
         },
         {
@@ -33,10 +34,25 @@
             "snapToGrid": 10,
             "userConfig": {
                 "title": "Overview",
-                "autoLoad": "{\nurl: \"/adrcollection/ajax/getdescription\",\nparams: {  \npid: (window.location.pathname.split('/')[3])\n}\n}",
-                "id": "adr-collection-overview-tab"
+                "autoLoad": "-ext-undefined-",
+                "id": "adr-collection-overview-tab",
+                "border": "-ext-undefined-",
+                "hideBorders": "-ext-undefined-",
+                "layout": "fit"
             },
-            "userXType": "overview"
+            "userXType": "overview",
+            "cn": [
+                {
+                    "id": "MyPanel4",
+                    "cid": "panel",
+                    "jsClass": "MyPanel4",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "title": "Description",
+                        "autoLoad": "{\nurl: \"/adrcollection/ajax/getdescription\",\nparams: {  \npid: (window.location.pathname.split('/')[3])\n}\n}"
+                    }
+                }
+            ]
         },
         {
             "id": "MyPanel2",
@@ -44,7 +60,12 @@
             "jsClass": "Manage",
             "snapToGrid": 10,
             "userConfig": {
-                "title": "Manage"
+                "title": "Manage",
+                "layout": "border",
+                "defaults": "{ split: true }",
+                "frame": "-ext-undefined-",
+                "border": false,
+                "hideBorders": "-ext-undefined-"
             },
             "userXType": "manage",
             "cn": [
@@ -55,7 +76,10 @@
                     "snapToGrid": 10,
                     "userConfig": {
                         "title": "Collection Properties",
-                        "frame": true
+                        "frame": true,
+                        "layout": "-ext-undefined-",
+                        "region": "north",
+                        "id": "adr-manage-collection-properties"
                     },
                     "cn": [
                         {
@@ -97,23 +121,43 @@
                     ]
                 },
                 {
-                    "id": "MyPanel4",
+                    "id": "MyPanel5",
                     "cid": "panel",
-                    "jsClass": "MyPanel4",
+                    "jsClass": "MyPanel5",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "title": "Detailed Information",
+                        "width": 200,
+                        "html": "Select a Datastream",
+                        "region": "east",
+                        "id": "adr-manage-detailed-info",
+                        "tpl": "<img src=\"{img_url}\" style=\"display:block;margin-right:auto;margin-left:auto;\"></img>\n<div style=\"text-align:center;\">{label}</div>\n<div style=\"text-align:center;\">{dsid}</div>"
+                    }
+                },
+                {
+                    "id": "MyPanel7",
+                    "cid": "panel",
+                    "jsClass": "MyPanel7",
                     "snapToGrid": 10,
                     "userConfig": {
                         "title": "Manage Collection Datastreams",
-                        "frame": "-ext-undefined-",
-                        "footer": true,
-                        "layout": "border"
+                        "autoHeight": "-ext-undefined-",
+                        "header": "-ext-undefined-",
+                        "region": "center",
+                        "width": 100,
+                        "id": "adr-manage-datastreams"
                     },
                     "cn": [
                         {
-                            "id": "MyToolbar1",
-                            "cid": "toolbar",
-                            "jsClass": "MyToolbar1",
-                            "dock": "tbar",
-                            "snapToGrid": 10
+                            "id": "MyPagingToolbar",
+                            "cid": "pagingtoolbar",
+                            "jsClass": "MyPagingToolbar",
+                            "dock": "fbar",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "store": "Datastreams",
+                                "id": "adr-manage-datastreams-pager"
+                            }
                         },
                         {
                             "id": "MyListView",
@@ -121,9 +165,13 @@
                             "jsClass": "MyListView",
                             "snapToGrid": 10,
                             "userConfig": {
-                                "columnResize": false,
+                                "columnResize": "-ext-undefined-",
                                 "store": "Datastreams",
-                                "region": "center"
+                                "autoHeight": "-ext-undefined-",
+                                "loadingText": "Loading Please Wait...",
+                                "singleSelect": true,
+                                "trackOver": "-ext-undefined-",
+                                "id": "adr-edit-file-list"
                             },
                             "cn": [
                                 {
@@ -160,26 +208,83 @@
                             ]
                         },
                         {
-                            "id": "MyPanel5",
-                            "cid": "panel",
-                            "jsClass": "MyPanel5",
+                            "id": "MyToolbar1",
+                            "cid": "toolbar",
+                            "jsClass": "MyToolbar1",
+                            "dock": "tbar",
                             "snapToGrid": 10,
-                            "userConfig": {
-                                "title": "Detailed Information",
-                                "region": "west",
-                                "width": 100,
-                                "html": "Select a Datastream"
-                            }
-                        },
-                        {
-                            "id": "MyPagingToolbar",
-                            "cid": "pagingtoolbar",
-                            "jsClass": "MyPagingToolbar",
-                            "dock": "bbar",
-                            "snapToGrid": 10,
-                            "userConfig": {
-                                "store": "Datastreams"
-                            }
+                            "cn": [
+                                {
+                                    "id": "MyButton3",
+                                    "cid": "button",
+                                    "jsClass": "MyButton3",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "text": "Add",
+                                        "cls": "x-btn-text-icon",
+                                        "iconCls": "adr-add-file-icon",
+                                        "id": "adr-edit-file-add",
+                                        "width": 50
+                                    }
+                                },
+                                {
+                                    "id": "MySeparator",
+                                    "cid": "tbseparator",
+                                    "jsClass": "MySeparator",
+                                    "snapToGrid": 10
+                                },
+                                {
+                                    "id": "MyButton4",
+                                    "cid": "button",
+                                    "jsClass": "MyButton4",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "text": "Edit",
+                                        "cls": "x-btn-text-icon",
+                                        "iconCls": "adr-edit-file-icon",
+                                        "id": "adr-edit-file-edit",
+                                        "width": 50
+                                    }
+                                },
+                                {
+                                    "id": "MySeparator1",
+                                    "cid": "tbseparator",
+                                    "jsClass": "MySeparator1",
+                                    "snapToGrid": 10
+                                },
+                                {
+                                    "id": "MyButton6",
+                                    "cid": "button",
+                                    "jsClass": "MyButton6",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "text": "Download",
+                                        "cls": "x-btn-text-icon",
+                                        "iconCls": "adr-download-file-icon",
+                                        "id": "adr-edit-file-download",
+                                        "width": 50
+                                    }
+                                },
+                                {
+                                    "id": "MySeparator3",
+                                    "cid": "tbseparator",
+                                    "jsClass": "MySeparator3",
+                                    "snapToGrid": 10
+                                },
+                                {
+                                    "id": "MyButton7",
+                                    "cid": "button",
+                                    "jsClass": "MyButton7",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "text": "Delete",
+                                        "cls": "x-btn-text-icon",
+                                        "iconCls": "adr-delete-file-icon",
+                                        "id": "adr-edit-file-delete",
+                                        "width": 50
+                                    }
+                                }
+                            ]
                         }
                     ]
                 }

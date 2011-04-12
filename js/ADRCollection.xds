@@ -22,7 +22,7 @@
             "userConfig": {
                 "activeTab": 2,
                 "width": 960,
-                "height": 900,
+                "height": "-ext-undefined-",
                 "id": "adr-collection-tabpanel",
                 "border": false
             }
@@ -38,7 +38,9 @@
                 "id": "adr-collection-overview-tab",
                 "border": "-ext-undefined-",
                 "hideBorders": "-ext-undefined-",
-                "layout": "fit"
+                "layout": "-ext-undefined-",
+                "autoHeight": true,
+                "frame": "-ext-undefined-"
             },
             "userXType": "overview",
             "cn": [
@@ -49,7 +51,9 @@
                     "snapToGrid": 10,
                     "userConfig": {
                         "title": "Description",
-                        "autoLoad": "{\nurl: \"/adrcollection/ajax/getdescription\",\nparams: {  \npid: (window.location.pathname.split('/')[3])\n}\n}"
+                        "autoLoad": "{\nurl: \"/adrcollection/ajax/getdescription\",\nparams: {  \npid: (window.location.pathname.split('/')[3])\n}\n}",
+                        "autoHeight": true,
+                        "frame": true
                     }
                 }
             ]
@@ -65,7 +69,9 @@
                 "defaults": "{ split: true }",
                 "frame": "-ext-undefined-",
                 "border": false,
-                "hideBorders": "-ext-undefined-"
+                "hideBorders": "-ext-undefined-",
+                "autoHeight": "-ext-undefined-",
+                "height": 900
             },
             "userXType": "manage",
             "cn": [
@@ -311,9 +317,200 @@
             "jsClass": "Content",
             "snapToGrid": 10,
             "userConfig": {
-                "title": "Content"
+                "title": "Content",
+                "height": 900,
+                "frame": "-ext-undefined-",
+                "defaults": "-ext-undefined-",
+                "hideBorders": "-ext-undefined-",
+                "floating": "-ext-undefined-",
+                "layout": "fit"
             },
-            "userXType": "Content"
+            "userXType": "Content",
+            "cn": [
+                {
+                    "id": "MyToolbar3",
+                    "cid": "toolbar",
+                    "jsClass": "MyToolbar3",
+                    "dock": "tbar",
+                    "snapToGrid": 10,
+                    "cn": [
+                        {
+                            "id": "MyLabel",
+                            "cid": "label",
+                            "jsClass": "MyLabel",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "text": "Filter: "
+                            }
+                        },
+                        {
+                            "id": "MySpacer",
+                            "cid": "spacer",
+                            "jsClass": "MySpacer",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "width": 10
+                            }
+                        },
+                        {
+                            "id": "MyCycleButton",
+                            "cid": "cyclebutton",
+                            "jsClass": "MyCycleButton",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "showText": true,
+                                "boxMinWidth": "-ext-undefined-",
+                                "minWidth": 75,
+                                "id": "adr-content-filter",
+                                "prependText": "Show "
+                            },
+                            "cn": [
+                                {
+                                    "id": "MyCheckItem",
+                                    "cid": "menucheckitem",
+                                    "jsClass": "MyCheckItem",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "text": "All Content",
+                                        "checked": true
+                                    }
+                                },
+                                {
+                                    "id": "MyCheckItem1",
+                                    "cid": "menucheckitem",
+                                    "jsClass": "MyCheckItem1",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "text": "Only Collections",
+                                        "checked": "-ext-undefined-"
+                                    }
+                                },
+                                {
+                                    "id": "MyCheckItem2",
+                                    "cid": "menucheckitem",
+                                    "jsClass": "MyCheckItem2",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "text": "Only Objects",
+                                        "checked": "-ext-undefined-"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "id": "MySpacer1",
+                            "cid": "spacer",
+                            "jsClass": "MySpacer1",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "width": 10
+                            }
+                        },
+                        {
+                            "id": "MyLabel1",
+                            "cid": "label",
+                            "jsClass": "MyLabel1",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "text": "Search: ",
+                                "id": "adr-content-search-text"
+                            }
+                        },
+                        {
+                            "id": "MySpacer2",
+                            "cid": "tbspacer",
+                            "jsClass": "MySpacer2",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "width": 10
+                            }
+                        },
+                        {
+                            "id": "MyTriggerField",
+                            "cid": "textfield",
+                            "jsClass": "MyTriggerField",
+                            "snapToGrid": 10
+                        },
+                        {
+                            "id": "MySpacer3",
+                            "cid": "tbspacer",
+                            "jsClass": "MySpacer3",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "width": 5
+                            }
+                        },
+                        {
+                            "id": "MyCycleButton1",
+                            "cid": "cyclebutton",
+                            "jsClass": "MyCycleButton1",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "showText": true,
+                                "id": "adr-content-search-type"
+                            },
+                            "cn": [
+                                {
+                                    "id": "MyCheckItem3",
+                                    "cid": "menucheckitem",
+                                    "jsClass": "MyCheckItem3",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "text": "Starts With",
+                                        "checked": true
+                                    }
+                                },
+                                {
+                                    "id": "MyCheckItem4",
+                                    "cid": "menucheckitem",
+                                    "jsClass": "MyCheckItem4",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "text": "Contains"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "MyPanel6",
+                    "cid": "panel",
+                    "jsClass": "MyPanel6",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "title": "-ext-undefined-",
+                        "frame": true,
+                        "id": "adr-content-panel",
+                        "layout": "-ext-undefined-",
+                        "border": "-ext-undefined-"
+                    },
+                    "cn": [
+                        {
+                            "id": "MyDataView1",
+                            "cid": "dataview",
+                            "jsClass": "MyDataView1",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "itemSelector": "div",
+                                "store": "CollectionMembers",
+                                "tpl": "<tpl for=\".\">\n<div class=\"adr-content-item\">\n<table>\n<tr><a href='{url}'><th class=\"adr-content-item-icon-block\"><img src=\"{img_url}\" class=\"adr-content-item-icon\"/></th></a><th><a href='{url}'><h2 class=\"adr-content-item-title\">{title}</h2></a></th></tr>\n<tr><td/><td class=\"adr-content-item-description\">{[fm.ellipsis(values.description, 350, true)]} <a href='{url}' class=\"adr-content-item-link\"> [Click for more]</a></td></tr>\n</table>\n</div>\n</tpl>",
+                                "loadingText": "Loading Please Wait..."
+                            }
+                        },
+                        {
+                            "id": "MyPagingToolbar1",
+                            "cid": "pagingtoolbar",
+                            "jsClass": "MyPagingToolbar1",
+                            "dock": "fbar",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "store": "CollectionMembers"
+                            }
+                        }
+                    ]
+                }
+            ]
         },
         {
             "id": "MyWindow",
@@ -625,6 +822,66 @@
                     "snapToGrid": 10,
                     "userConfig": {
                         "name": "user"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "MyStore4",
+            "cid": "jsonstore",
+            "jsClass": "CollectionMembers",
+            "snapToGrid": 10,
+            "userConfig": {
+                "storeId": "CollectionMembers",
+                "url": "/adrcollection/ajax/getCollectionMembers",
+                "baseParams": "{\npid: decodeURIComponent(window.location.pathname.split('/')[3])\n}",
+                "autoLoad": "-ext-undefined-",
+                "root": "data"
+            },
+            "cn": [
+                {
+                    "id": "MyField14",
+                    "cid": "datafield",
+                    "jsClass": "MyField14",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "title"
+                    }
+                },
+                {
+                    "id": "MyField15",
+                    "cid": "datafield",
+                    "jsClass": "MyField15",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "pid"
+                    }
+                },
+                {
+                    "id": "MyField16",
+                    "cid": "datafield",
+                    "jsClass": "MyField16",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "description"
+                    }
+                },
+                {
+                    "id": "MyField17",
+                    "cid": "datafield",
+                    "jsClass": "MyField17",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "url"
+                    }
+                },
+                {
+                    "id": "MyField18",
+                    "cid": "datafield",
+                    "jsClass": "MyField18",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "img_url"
                     }
                 }
             ]

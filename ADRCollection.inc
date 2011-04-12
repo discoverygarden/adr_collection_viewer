@@ -63,7 +63,8 @@ class ADRCollection {
       'Datastreams.js',
       'ControlGroups.js',
       'MIMETypes.js',
-      'CollectionProperties.js'
+      'CollectionProperties.js',
+      'CollectionMembers.js'
     );
 
     $custom_components = array(
@@ -183,8 +184,6 @@ EOT;
     $this->includeRequiredScripts(); // Javascript all the way!
     $title = $this->getCollectionTitle();
     $description = $this->getCollectionDescription();
-
-    var_dump($this->collection->getSubCollections());
     return <<<EOT
     $title
     $description

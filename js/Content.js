@@ -14,6 +14,35 @@
 Content = Ext.extend(ContentUi, {
     initComponent: function() {
         Content.superclass.initComponent.call(this);
+        var toolbar = this.getTopToolbar();
+        var content_panel = this.get('adr-content-panel');
+        var filter = toolbar.get('adr-content-filter');
+        var search_type = toolbar.get('adr-content-search-type');
+        var search_text = toolbar.get('adr-content-search-text');
+        content_panel.addListener('afterrender', function() { this.getFooterToolbar().doRefresh(); });
+
+        filter.addListener('change', function() {
+            var filter = { "All Content": 'all', "Only Collections": 'collections', "Only Objects": 'objects'};
+            var pager = content_panel.getFooterToolbar();
+            var lastOptions = pager.store.lastOptions;
+            lastOptions.params.filter = filter[this.activeItem.text];
+            pager.store.reload(lastOptions);
+        });
+
+        search_type.addListener('change', function() {
+            var search_type = { "Starts With": 'starts', "Contains": 'contains' };
+            var pager = content_panel.getFooterToolbar();
+            var lastOptions = pager.store.lastOptions;
+            lastOptions.params.search_type = search_type[this.activeItem.text];
+            pager.store.reload(lastOptions);
+        });
+
+        search_text.addListener('change', function() {
+            var pager = content_panel.getFooterToolbar();
+            var lastOptions = pager.store.lastOptions;
+            lastOptions.params.search_text = this.getValue();
+            pager.store.reload(lastOptions);
+        });
     }
 });
 Ext.reg('Content', Content);

@@ -60,3 +60,24 @@ td.adr-collection-description {
 .x-list-over {
     background-color: #eeeebb;
 }
+
+.adr-content-item-title {
+    font-size: 2em;
+    text-decoration:underline;
+}
+.adr-content-item-icon-block {
+    width: 64px;
+    height: 64px;
+    padding: 5px;
+}
+.adr-content-item-icon {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.adr-content-item-description {
+    font-size: 1.1em;
+}
+.adr-content-item-link {
+
+}

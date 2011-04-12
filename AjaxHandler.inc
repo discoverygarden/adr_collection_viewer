@@ -133,6 +133,21 @@ class AjaxHandler {
     return "$base_url/fedora/repository/object_download/" . drupal_urlencode($this->pid) . '/' . $dsid . '/' . drupal_urlencode(preg_replace('/\//i', '${1}_', $label));
   }
 
+  /**
+   * Gets the fedora object's properties.
+   *
+   * @return array
+   */
+  public function getObjectProperties() {
+    $object_properties = array(
+      'label' => $this->getObjectLabel(),
+      'created' => $this->getObjectCreationDate(),
+      'modified' => $this->getObjectLastModifiedDate(),
+      'owner' => $this->getObjectOwner(),
+      'state' => $this->getObjectState()
+    );
+    return array($object_properties);
+  }
 
   /**
    * Gets the fedora object's label.
@@ -313,4 +328,5 @@ class AjaxHandler {
       return json_encode(array('success' => false, 'msg' => 'Failed to deleted file.'));
     }
   }
+
 }

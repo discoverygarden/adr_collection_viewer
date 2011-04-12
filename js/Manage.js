@@ -76,11 +76,9 @@ Manage = Ext.extend(ManageUi, {
                 Ext.Msg.confirm('Delete', 'Are you sure you want to delete this file?', function(btn, text){
                     if (btn == 'yes') {
                         Ext.Ajax.request({
-                            url: '/adrbasic/ajax/removeDatastream',
+                            url: '/adrcollection/ajax/removeDatastream',
                             success: function() {
                                 var store = Ext.StoreMgr.lookup('Datastreams');
-                                store.reload(store.lastOptions);
-                                store = Ext.StoreMgr.lookup('OverviewDatastreams');
                                 store.reload(store.lastOptions);
                             },
                             failure: function() {

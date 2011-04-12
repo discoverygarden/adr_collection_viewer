@@ -52,8 +52,48 @@ class Collection {
 
   public function __construct($pid) {
     module_load_include('inc', 'fedora_repository', 'api/fedora_item');
-    $this->pid;
+    $this->pid = $pid;
     $this->item = new Fedora_Item($pid);
+  }
+
+  public function getSubCollections() {
+    module_load_include('inc', 'fedora_repository', 'CollectionClass');
+    $collectionClass = new CollectionClass();
+    $query = 'select $object $title $content from <#ri>
+                             where ($object <dc:title> $title
+                             and $object <fedora-model:hasModel> $content
+                             and ($content <fedora-model:hasModel> <info:fedora/islandora:collectionCModel>)
+                             and ($object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
+                             or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '>)
+                             and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>)
+                             minus $content <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
+                             order by $title';
+    $results = $collectionClass->getRelatedObjects($this->pid, $limit, $offset, $query);
+    var_dump($results);
+    if($results != ' ') {
+      $doc = new DOMDocument();
+      $doc->loadXML(trim($results));
+      $path = new DOMXPath($doc);
+      $path->registerNamespace('sparql', 'http://www.w3.org/2001/sw/DataAccess/rf1/result');
+      $results = $path->query('//sparql:result');
+      if($results && $results->length > 0 ) {
+        $count = $results->length;
+        $sub_collections = array();
+        for($i = 0; $i < $count; $i++) {
+          $result = $results->item(0);
+          // Title
+          $title = $path->query('sparql:title', $result)->item(0)->textContent;
+          // Pid
+          $pid = $path->query('sparql:object/@uri', $result)->item(0)->value;
+          $pid = substr($pid, 12); // 12 characteres in "info:fedora/"
+          // Description
+          $description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+          $sub_collections[] = array('title' => $title, 'pid' => $pid, 'description' => $description);
+        }
+        return $sub_collections;
+      }
+    }
+    return array();
   }
 
   /**

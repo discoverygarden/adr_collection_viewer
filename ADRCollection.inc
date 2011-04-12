@@ -29,6 +29,11 @@ class ADRCollection {
    * @var Fedora_Item 
    */
   protected $item;
+  /**
+   *
+   * @var Collection
+   */
+  protected $collection;
 
   /**
    * Create the collection viewer.
@@ -58,6 +63,7 @@ class ADRCollection {
       'Datastreams.js',
       'ControlGroups.js',
       'MIMETypes.js',
+      'CollectionProperties.js'
     );
 
     $custom_components = array(
@@ -169,7 +175,7 @@ EOT;
     }
     return NULL;
   }
-  
+
   /**
    *
    */
@@ -177,6 +183,8 @@ EOT;
     $this->includeRequiredScripts(); // Javascript all the way!
     $title = $this->getCollectionTitle();
     $description = $this->getCollectionDescription();
+
+    var_dump($this->collection->getSubCollections());
     return <<<EOT
     $title
     $description

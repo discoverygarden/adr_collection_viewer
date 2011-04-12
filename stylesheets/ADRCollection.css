@@ -49,6 +49,10 @@ td.adr-collection-description {
     background-image:url(../images/icon/remove.png);
 }
 
+#adr-manage-collection-properties th {
+    padding-right: 10px;
+}
+
 .x-list-selected {
     background-color: #ffff00;
 }

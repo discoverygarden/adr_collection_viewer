@@ -79,9 +79,22 @@
                         "frame": true,
                         "layout": "-ext-undefined-",
                         "region": "north",
-                        "id": "adr-manage-collection-properties"
+                        "id": "adr-manage-collection-properties",
+                        "autoHeight": "-ext-undefined-",
+                        "height": 140
                     },
                     "cn": [
+                        {
+                            "id": "MyDataView",
+                            "cid": "dataview",
+                            "jsClass": "MyDataView",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "itemSelector": "div",
+                                "store": "CollectionProperties",
+                                "tpl": "<tpl for=\".\">\n<table>\n <tr><th>Label: </th><td>{label}</td></tr>\n <tr><th>Created: </th><td>{created}</td></tr>\n <tr><th>Modified: </th><td>{modified}</td></tr>\n <tr><th>Owner: </th><td>{owner}</td></tr>\n <tr><th>State: </th><td>{state}</td></tr>\n</table>\n</tpl>"
+                            }
+                        },
                         {
                             "id": "MyToolbar",
                             "cid": "toolbar",
@@ -131,7 +144,8 @@
                         "html": "Select a Datastream",
                         "region": "east",
                         "id": "adr-manage-detailed-info",
-                        "tpl": "<img src=\"{img_url}\" style=\"display:block;margin-right:auto;margin-left:auto;\"></img>\n<div style=\"text-align:center;\">{label}</div>\n<div style=\"text-align:center;\">{dsid}</div>"
+                        "tpl": "<img src=\"{img_url}\" style=\"display:block;margin-right:auto;margin-left:auto;\"></img>\n<div style=\"text-align:center;\">{label}</div>\n<div style=\"text-align:center;\">{dsid}</div>",
+                        "frame": true
                     }
                 },
                 {
@@ -145,7 +159,8 @@
                         "header": "-ext-undefined-",
                         "region": "center",
                         "width": 100,
-                        "id": "adr-manage-datastreams"
+                        "id": "adr-manage-datastreams",
+                        "frame": "-ext-undefined-"
                     },
                     "cn": [
                         {
@@ -542,6 +557,74 @@
                     "snapToGrid": 10,
                     "userConfig": {
                         "name": "mime"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "MyStore3",
+            "cid": "jsonstore",
+            "jsClass": "CollectionProperties",
+            "snapToGrid": 10,
+            "userConfig": {
+                "storeId": "CollectionProperties",
+                "baseParams": "{\npid: decodeURIComponent(window.location.pathname.split('/')[3])\n}",
+                "url": "/adrcollection/ajax/getObjectProperties",
+                "autoLoad": true
+            },
+            "cn": [
+                {
+                    "id": "MyField8",
+                    "cid": "datafield",
+                    "jsClass": "MyField8",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "label"
+                    }
+                },
+                {
+                    "id": "MyField9",
+                    "cid": "datafield",
+                    "jsClass": "MyField9",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "created"
+                    }
+                },
+                {
+                    "id": "MyField10",
+                    "cid": "datafield",
+                    "jsClass": "MyField10",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "modified"
+                    }
+                },
+                {
+                    "id": "MyField11",
+                    "cid": "datafield",
+                    "jsClass": "MyField11",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "owner"
+                    }
+                },
+                {
+                    "id": "MyField12",
+                    "cid": "datafield",
+                    "jsClass": "MyField12",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "state"
+                    }
+                },
+                {
+                    "id": "MyField13",
+                    "cid": "datafield",
+                    "jsClass": "MyField13",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "user"
                     }
                 }
             ]

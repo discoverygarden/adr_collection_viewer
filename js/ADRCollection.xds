@@ -413,7 +413,7 @@
                             "snapToGrid": 10,
                             "userConfig": {
                                 "text": "Search: ",
-                                "id": "adr-content-search-text"
+                                "id": "-ext-undefined-"
                             }
                         },
                         {
@@ -427,9 +427,12 @@
                         },
                         {
                             "id": "MyTriggerField",
-                            "cid": "textfield",
+                            "cid": "trigger",
                             "jsClass": "MyTriggerField",
-                            "snapToGrid": 10
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "id": "adr-content-search-text"
+                            }
                         },
                         {
                             "id": "MySpacer3",

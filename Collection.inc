@@ -47,6 +47,7 @@ class Collection {
    * @var <type>
    */
   protected $metadataPath;
+  protected $solr;
 
   /**
    *
@@ -137,17 +138,7 @@ class Collection {
    * @return array
    */
   private function getMemberCollections($offset = NULL, $limit = NULL, $search_type = NULL, $search_text = NULL) {
-    $query = 'select $object $title $content from <#ri>
-                             where ($object <dc:title> $title
-                             and $object <fedora-model:hasModel> $content
-                             and ($content <fedora-model:hasModel> <info:fedora/islandora:collectionCModel>)
-                             and ($object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
-                             or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '>)
-                             and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>)
-                             minus $content <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
-                             order by $title';
-    $result = $this->query($query, $offset, $limit);
-    $count = $this->count($query);
+    $solr = $this->getSolr();
     return array($result, $count);
   }
 
@@ -192,6 +183,37 @@ class Collection {
       return $path->evaluate('count(//sparql:result)');
     }
     return 0;
+  }
+
+  private function getSolr() {
+    if (empty($this->solr)) {
+      module_load_include('php', 'islandora_solr_search', 'Solr/Service');
+      $host = variable_get('islandora_solr_search_block_host', 'localhost');
+      $port = variable_get('islandora_solr_search_block_port', '8080');
+      $app_name = variable_get('islandora_solr_search_block_app_name', 'solr');
+      $this->solr = new Apache_Solr_Service($host, $port, '/' . $app_name . '/');
+    }
+    return $this->solr;
+  }
+
+  public function querySolr($query) {
+    $additional_params = array(
+      'facet' => 'false',
+      'qt' => variable_get("islandora_solr_search_block_request_handler", t("standard"))
+    );
+    $solr = $this->getSolr();
+    $query = $string = trim(strtolower($query));
+    $query = $solr->escape($query);
+    try {
+      $results = $solr->search($query, 0, 10, $additional_params);
+    } catch (Exception $e) {
+      drupal_set_message(t('error searching ') . $e->getMessage());
+    }
+    if (empty($results)) {
+      drupal_set_message(t('Error searching solr index. Is the solr search block configured properly?'), 'error');
+      return ' ';
+    }
+    var_dump($results);
   }
 
   /**

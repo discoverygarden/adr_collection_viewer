@@ -37,12 +37,12 @@ Content = Ext.extend(ContentUi, {
             pager.store.reload(lastOptions);
         });
 
-        search_text.addListener('change', function() {
+        search_text.onTriggerClick = function(event) {
             var pager = content_panel.getFooterToolbar();
             var lastOptions = pager.store.lastOptions;
-            lastOptions.params.search_text = this.getValue();
+            lastOptions.params.search_text = search_text.getValue();
             pager.store.reload(lastOptions);
-        });
+        };
     }
 });
 Ext.reg('Content', Content);

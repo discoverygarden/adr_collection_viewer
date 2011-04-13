@@ -18,7 +18,7 @@ ADRCollectionViewer = Ext.extend(ADRCollectionViewerUi, {
             this.add(new Overview());
         }
         if(typeof(Content) == "function" && typeof(Content.prototype) == "object") {
-            this.add(new Content());
+            this.activate(this.add(new Content()));
         }
         if(typeof(Manage) == "function" && typeof(Manage.prototype) == "object") {
             this.add(new Manage());

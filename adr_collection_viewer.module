@@ -89,11 +89,6 @@ function adr_collection_viewer_show($pid) {
   theme();
   module_load_include('inc', 'adr_collection_viewer', 'ADRCollection');
   $viewer = new ADRCollection($pid);
-
-  module_load_include('inc', 'adr_collection_viewer', 'Collection');
-  $collection = new Collection($pid);
-  $collection->querySolr('colorado');
-
   return $viewer->render();
 }
 

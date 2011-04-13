@@ -229,7 +229,7 @@ function adr_collection_viewer_get_collection_members() {
   $filter = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : 'all';
   $search_type = isset($_REQUEST['search_type']) ? $_REQUEST['search_type'] : 'contains';
   $search_text = isset($_REQUEST['search_text']) ? $_REQUEST['search_text'] : '';
-  if (isset($pid)) {
+  if (isset($pid)) { 
     module_load_include('inc', 'adr_collection_viewer', 'Collection');
     $collection = new Collection($pid);
     $response = $collection->getMembers($start, $limit, $filter, $search_type, $search_text);

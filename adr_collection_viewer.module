@@ -222,7 +222,7 @@ function adr_collection_viewer_get_collection_members() {
   $start = isset($_REQUEST['start']) ? $_REQUEST['start'] : 0;
   $limit = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 7;
   $filter = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : 'all';
-  $search_type = isset($_REQUEST['search_type']) ? $_REQUEST['search_type'] : 'contains';
+  $search_type = isset($_REQUEST['search_type']) ? $_REQUEST['search_type'] : 'start';
   $search_text = isset($_REQUEST['search_text']) ? $_REQUEST['search_text'] : '';
   if (isset($pid)) { 
     module_load_include('inc', 'adr_collection_viewer', 'Collection');

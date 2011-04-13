@@ -170,11 +170,11 @@ class Collection {
     if(isset($search_text) && trim($search_text) != '') {
       switch ($search_type) {
         case 'start':
-          $data = array_filter($data, function ($item) use ($search_text) { return preg_match("/^$search_text.*/i", $item['title']) != 0; });
+          $data = array_filter($data, function ($item) use ($search_text) { return preg_match("/^{$search_text}.*/i", $item['title']) != 0; });
           break;
         case 'contains':
         default:
-          $data = array_filter($data, function ($item) use ($search_text) { return preg_match("/.*$search_text.*/i", $item['title']) != 0; });
+          $data = array_filter($data, function ($item) use ($search_text) { return preg_match("/^.*{$search_text}.*/i", $item['title']) != 0; });
           break;
       }
       $count = count($data);

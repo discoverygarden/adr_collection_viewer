@@ -71,14 +71,17 @@ class Collection {
   public function getMembers($offset, $limit, $filter, $search_type, $search_text) {
     switch ($filter) {
       case 'collections':
-        list($data, $count) = $this->getMemberCollections($offset, $limit, $search_type, $search_text);
+        $data = $this->getMemberCollections();
+        list($data, $count) = $this->refineSearch($data, $offset, $limit, $search_type, $search_text);
         break;
       case 'objects':
-        list($data, $count) = $this->getMemberObjects($offset, $limit, $search_type, $search_text);
+        $data = $this->getMemberObjects();
+        list($data, $count) = $this->refineSearch($data, $offset, $limit, $search_type, $search_text);
         break;
       case 'all':
       default:
-        list($data, $count) = $this->getAllMembers($offset, $limit, $search_type, $search_text);
+        $data = $this->getAllMembers();
+        list($data, $count) = $this->refineSearch($data, $offset, $limit, $search_type, $search_text);
         break;
     }
     return array('success' => true, 'data' => $data, 'total' => $count);
@@ -86,13 +89,9 @@ class Collection {
 
   /**
    *
-   * @param int $offset
-   * @param int $limit
-   * @param string $search_type
-   * @param string $search_text
    * @return array
    */
-  private function getAllMembers($offset, $limit, $search_type, $search_text) {
+  private function getAllMembers() {
     $query = 'select $object $title $content from <#ri>
                              where ($object <dc:title> $title
                              and $object <fedora-model:hasModel> $content
@@ -101,20 +100,14 @@ class Collection {
                              and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>)
                              minus $content <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
                              order by $title';
-    $result = $this->query($query, $offset, $limit);
-    $count = $this->count($query);
-    return array($result, $count);
+    return $this->query($query, $offset, $limit);
   }
 
   /**
    *
-   * @param int $offset
-   * @param int $limit
-   * @param string $search_type
-   * @param string $search_text
    * @return array
    */
-  private function getMemberObjects($offset, $limit, $search_type, $search_text) {
+  private function getMemberObjects() {
     $query = 'select $object $title $content from <#ri>
                              where ($object <dc:title> $title
                              and $object <fedora-model:hasModel> $content
@@ -124,22 +117,24 @@ class Collection {
                              and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>)
                              minus $content <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
                              order by $title';
-    $result = $this->query($query, $offset, $limit);
-    $count = $this->count($query);
-    return array($result, $count);
+    return $this->query($query, $offset, $limit);
   }
 
   /**
    *
-   * @param int $offset
-   * @param int $limit
-   * @param string $search_type
-   * @param string $search_text
    * @return array
    */
-  private function getMemberCollections($offset = NULL, $limit = NULL, $search_type = NULL, $search_text = NULL) {
-    $solr = $this->getSolr();
-    return array($result, $count);
+  private function getMemberCollections() {
+    $query = 'select $object $title $content from <#ri>
+                             where ($object <dc:title> $title
+                             and $object <fedora-model:hasModel> $content
+                             and ($content <fedora-model:hasModel> <info:fedora/islandora:collectionCModel>)
+                             and ($object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
+                             or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '>)
+                             and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>)
+                             minus $content <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
+                             order by $title';
+    return $this->query($query, $offset, $limit);
   }
 
   private function query($query, $offset, $limit) {
@@ -169,6 +164,38 @@ class Collection {
       }
     }
     return array();
+  }
+
+  private function refineSearch($data, $offset, $limit, $search_type, $search_text) {
+    if(isset($search_text) && trim($search_text) != '') {
+      switch ($search_type) {
+        case 'start':
+          $data = array_filter($data, function ($item) use ($search_text) { return preg_match("/$search_text*/i", $item['title']) != 0; });
+          break;
+        case 'contains':
+        default:
+          $data = array_filter($data, function ($item) use ($search_text) { return preg_match("/.*$search_text.*/i", $item['title']) != 0; });
+          break;
+      }
+      $count = count($data);
+      $data = array_slice($data, $offset, $limit);
+      return array($data, $count);
+    }
+    else {
+      $count = count($data);
+      $data = array_slice($data, $offset, $limit);
+      return array($data, $count);
+    }
+  }
+
+  private function foo(&$item, $key, $search_text) {
+    if(!preg_match("/$search_text/i", $item['title'])) {
+
+    }
+  }
+
+  private function bar() {
+  
   }
 
   private function count($query) {

@@ -152,7 +152,7 @@ class Collection {
         $count = $query_results->length;
         $returns = array();
         for ($i = 0; $i < $count; $i++) {
-          $result = $query_results->item(0);
+          $result = $query_results->item($i);
           $title = $path->query('sparql:title', $result)->item(0)->textContent;
           $pid = substr($path->query('sparql:object/@uri', $result)->item(0)->value, 12); // 12 characteres in "info:fedora/"
           $description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
@@ -186,16 +186,6 @@ class Collection {
       $data = array_slice($data, $offset, $limit);
       return array($data, $count);
     }
-  }
-
-  private function foo(&$item, $key, $search_text) {
-    if(!preg_match("/$search_text/i", $item['title'])) {
-
-    }
-  }
-
-  private function bar() {
-  
   }
 
   private function count($query) {

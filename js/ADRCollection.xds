@@ -508,7 +508,8 @@
                             "dock": "fbar",
                             "snapToGrid": 10,
                             "userConfig": {
-                                "store": "CollectionMembers"
+                                "store": "CollectionMembers",
+                                "pageSize": 7
                             }
                         }
                     ]

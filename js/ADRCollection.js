@@ -5,8 +5,7 @@
 
 // Create the viewer.
 Ext.onReady(function(){
-
-    Ext.get('content-fedora').update('');
+    Ext.get('content-fedora').update(ADRCollection.title + ADRCollection.description);
     Ext.get('content-fedora').dom.id = "adr-collection-viewer";
     Ext.QuickTips.init();
     new ADRCollectionViewer({

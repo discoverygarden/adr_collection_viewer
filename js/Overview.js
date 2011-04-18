@@ -15,10 +15,12 @@ Overview = Ext.extend(OverviewUi, {
     initComponent: function() {
         Overview.superclass.initComponent.call(this);
         var link = Ext.get('adr-show-overview-link');
-        link.on('click', function() {
-            var viewer = Ext.getCmp('adr-collection-tabpanel');
-            viewer.setActiveTab(0);
-        });
+        if(link) {
+            link.on('click', function() {
+                var viewer = Ext.getCmp('adr-collection-tabpanel');
+                viewer.setActiveTab(0);
+            });
+        }
     }
 });
 Ext.reg('overview', Overview);

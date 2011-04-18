@@ -81,6 +81,14 @@ function adr_collection_viewer_menu() {
   return $items;
 }
 
+function adr_collection_viewer_get_pid() {
+  $pid = isset($_REQUEST['pid']) ? $_REQUEST['pid'] : variable_get('fedora_repository_pid', 'islandora:top');
+  if($pid == 'undefined') {
+    return variable_get('fedora_repository_pid', 'islandora:top');
+  }
+  return $pid;
+}
+
 /**
  *
  * @param string $collection
@@ -93,7 +101,7 @@ function adr_collection_viewer_show($pid) {
 }
 
 function adr_collection_viewer_get_description($pid) {
-  $pid = $_REQUEST['pid'];
+  $pid = adr_collection_viewer_get_pid();
   if (isset($pid)) {
     module_load_include('inc', 'adr_collection_viewer', 'AjaxHandler');
     $handler = new AjaxHandler($pid);
@@ -106,7 +114,7 @@ function adr_collection_viewer_get_description($pid) {
  *
  */
 function adr_collection_viewer_get_datastreams() {
-  $pid = $_REQUEST['pid'];
+  $pid = adr_collection_viewer_get_pid();
   $start = isset($_REQUEST['start']) ? $_REQUEST['start'] : 0;
   $limit = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 33;
   if (isset($pid)) {
@@ -121,7 +129,7 @@ function adr_collection_viewer_get_datastreams() {
  *
  */
 function adr_collection_viewer_add_datastream() {
-  $pid = $_REQUEST['pid'];
+  $pid = adr_collection_viewer_get_pid();
   if (isset($pid)) {
     module_load_include('inc', 'adr_collection_viewer', 'AjaxHandler');
     $handler = new AjaxHandler($pid);
@@ -134,7 +142,7 @@ function adr_collection_viewer_add_datastream() {
  *
  */
 function adr_collection_viewer_remove_datastream() {
-  $pid = $_REQUEST['pid'];
+  $pid = adr_collection_viewer_get_pid();
   $dsid = $_REQUEST['dsid'];
   if (isset($pid) && isset($dsid)) {
     module_load_include('inc', 'adr_collection_viewer', 'AjaxHandler');
@@ -152,7 +160,7 @@ function adr_collection_viewer_remove_datastream() {
  * Example: { success: true, msg: 'message', data: '{ { mime: 'image/jpg'}, ... }' }
  */
 function adr_collection_viewer_get_allowed_mime_types() {
-  $pid = $_REQUEST['pid'];
+  $pid = adr_collection_viewer_get_pid();
   if (isset($pid)) {
     module_load_include('inc', 'adr_collection_viewer', 'AjaxHandler');
     $handler = new AjaxHandler($pid);
@@ -170,7 +178,7 @@ function adr_collection_viewer_get_allowed_mime_types() {
  * Example: { success: true, msg: 'message', data: '{ { label: ''}, ... }' }
  */
 function adr_collection_viewer_get_object_properties() {
-  $pid = $_REQUEST['pid'];
+  $pid = adr_collection_viewer_get_pid();
   if (isset($pid)) {
     module_load_include('inc', 'adr_collection_viewer', 'AjaxHandler');
     $handler = new AjaxHandler($pid);
@@ -188,7 +196,7 @@ function adr_collection_viewer_get_object_properties() {
  * Example: { success: true, msg: 'message', data: '{ { label: ''}, ... }' }
  */
 function adr_collection_viewer_set_object_properties() {
-  $pid = $_REQUEST['pid'];
+  $pid = adr_collection_viewer_get_pid();
   if (isset($pid)) {
     module_load_include('inc', 'adr_collection_viewer', 'AjaxHandler');
     $handler = new AjaxHandler($pid);
@@ -205,7 +213,7 @@ function adr_collection_viewer_set_object_properties() {
  * Example: { success: true, msg: 'message' }
  */
 function adr_collection_viewer_delete_object() {
-  $pid = $_REQUEST['pid'];
+  $pid = adr_collection_viewer_get_pid();
   if (isset($pid)) {
     module_load_include('inc', 'adr_collection_viewer', 'AjaxHandler');
     $handler = new AjaxHandler($pid);
@@ -218,7 +226,7 @@ function adr_collection_viewer_delete_object() {
  * 
  */
 function adr_collection_viewer_get_collection_members() {
-  $pid = $_REQUEST['pid'];
+  $pid = adr_collection_viewer_get_pid();
   $start = isset($_REQUEST['start']) ? $_REQUEST['start'] : 0;
   $limit = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 7;
   $filter = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : 'all';

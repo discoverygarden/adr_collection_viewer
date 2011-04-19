@@ -19,10 +19,17 @@ Content = Ext.extend(ContentUi, {
         var filter = toolbar.get('adr-content-filter');
         var search_type = toolbar.get('adr-content-search-type');
         var search_text = toolbar.get('adr-content-search-text');
-        content_panel.addListener('afterrender', function() { this.getFooterToolbar().doRefresh(); });
+        var add = toolbar.get('adr-content-add');
+        content_panel.addListener('afterrender', function() {
+            this.getFooterToolbar().doRefresh();
+        });
 
         filter.addListener('change', function() {
-            var filter = { "All Content": 'all', "Only Collections": 'collections', "Only Objects": 'objects'};
+            var filter = {
+                "All Content": 'all',
+                "Only Collections": 'collections',
+                "Only Objects": 'objects'
+            };
             var pager = content_panel.getFooterToolbar();
             var lastOptions = pager.store.lastOptions;
             lastOptions.params.filter = filter[this.activeItem.text];
@@ -30,7 +37,10 @@ Content = Ext.extend(ContentUi, {
         });
 
         search_type.addListener('change', function() {
-            var search_type = { "Starts With": 'starts', "Contains": 'contains' };
+            var search_type = {
+                "Starts With": 'starts',
+                "Contains": 'contains'
+            };
             var pager = content_panel.getFooterToolbar();
             var lastOptions = pager.store.lastOptions;
             lastOptions.params.search_type = search_type[this.activeItem.text];
@@ -43,6 +53,15 @@ Content = Ext.extend(ContentUi, {
             lastOptions.params.search_text = search_text.getValue();
             pager.store.reload(lastOptions);
         };
+
+        add.addListener('click', function() {
+            var location = window.location;
+            var page = location.protocol + '//' + location.host + '/formbuilder/ingest/';
+            if(typeof(ADRCollection.pid) != 'undefined') {
+                page = page + ADRCollection.pid;
+            }
+            window.location = page;
+        });
     }
 });
 Ext.reg('Content', Content);

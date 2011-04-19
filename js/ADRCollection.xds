@@ -476,6 +476,22 @@
                                     }
                                 }
                             ]
+                        },
+                        {
+                            "id": "MyFill",
+                            "cid": "tbfill",
+                            "jsClass": "MyFill",
+                            "snapToGrid": 10
+                        },
+                        {
+                            "id": "MyButton9",
+                            "cid": "button",
+                            "jsClass": "MyButton9",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "text": "Add to this Collection",
+                                "id": "adr-content-add"
+                            }
                         }
                     ]
                 },

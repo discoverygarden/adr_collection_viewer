@@ -63,6 +63,7 @@ class ADRCollection {
       'Datastreams.js',
       'ControlGroups.js',
       'MIMETypes.js',
+      'State.js',
       'CollectionProperties.js',
       'CollectionMembers.js'
     );
@@ -70,6 +71,8 @@ class ADRCollection {
     $custom_components = array(
       'FileUploadField.ui.js',
       'FileUploadField.js',
+      'EditObjectWindow.ui.js',
+      'EditObjectWindow.js',
     );
 
     $main_viewer = array(

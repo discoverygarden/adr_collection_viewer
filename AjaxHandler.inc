@@ -151,6 +151,50 @@ class AjaxHandler {
   }
 
   /**
+   * Sets the fedora object's properties.
+   *
+   * Input is expected to be from the form defined on the manage tab,
+   * of the ADR Basic viewer.
+   *
+   * @return array
+   *   Indicates the success of this function as well as the fedora
+   *   objects current settings.
+   */
+  public function setObjectProperties($values) {
+    $states = array(
+      'Active' => 'A',
+      'Inactive' => 'I',
+      'Deleted' => 'D',
+    );
+    $label = $values['label'];
+    $owner = $values['owner'];
+    $state = $values['state'];
+    if ($this->item->modify_object($label, $states[$state], $owner)) {
+      $object_properties = $this->getObjectProperties();
+      return array('success' => true, 'msg' => 'Successfuly Edited Object', 'data' => $object_properties);
+    }
+    else {
+      $object_properties = $this->getObjectProperties();
+      return array('success' => false, 'msg' => 'Failed to Edit Object', 'data' => $object_properties);
+    }
+  }
+
+  /**
+   * Deletes the fedora object in question.
+   *
+   * @return array
+   */
+  public function deleteObject() {
+    if ($this->item->purge()) {
+      drupal_set_message("Successfuly Deleted Object: {$this->pid}");
+      return array('success' => true, 'msg' => 'Successfuly Deleted Object');
+    }
+    else {
+      return array('success' => false, 'msg' => 'Failed to Delete Object');
+    }
+  }
+
+  /**
    * Gets the fedora object's label.
    *
    * @return string

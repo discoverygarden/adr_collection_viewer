@@ -10,8 +10,11 @@
 <script type="text/javascript" src="AddDatastream.js"></script>
 <script type="text/javascript" src="FileUploadField.ui.js"></script>
 <script type="text/javascript" src="FileUploadField.js"></script>
+<script type="text/javascript" src="EditObjectWindow.ui.js"></script>
+<script type="text/javascript" src="EditObjectWindow.js"></script>
 <script type="text/javascript" src="Datastreams.js"></script>
 <script type="text/javascript" src="ControlGroups.js"></script>
 <script type="text/javascript" src="MIMETypes.js"></script>
 <script type="text/javascript" src="CollectionProperties.js"></script>
 <script type="text/javascript" src="CollectionMembers.js"></script>
+<script type="text/javascript" src="State.js"></script>

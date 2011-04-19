@@ -81,11 +81,11 @@
                     "jsClass": "MyPanel3",
                     "snapToGrid": 10,
                     "userConfig": {
-                        "title": "Collection Properties",
+                        "title": "Object Properties",
                         "frame": true,
                         "layout": "-ext-undefined-",
                         "region": "north",
-                        "id": "adr-manage-collection-properties",
+                        "id": "adr-manage-object-properties",
                         "autoHeight": "-ext-undefined-",
                         "height": 140
                     },
@@ -97,7 +97,7 @@
                             "snapToGrid": 10,
                             "userConfig": {
                                 "itemSelector": "div",
-                                "store": "CollectionProperties",
+                                "store": "ObjectProperties",
                                 "tpl": "<tpl for=\".\">\n<table>\n <tr><th>Label: </th><td>{label}</td></tr>\n <tr><th>Created: </th><td>{created}</td></tr>\n <tr><th>Modified: </th><td>{modified}</td></tr>\n <tr><th>Owner: </th><td>{owner}</td></tr>\n <tr><th>State: </th><td>{state}</td></tr>\n</table>\n</tpl>"
                             }
                         },
@@ -114,7 +114,8 @@
                                     "jsClass": "MyButton2",
                                     "snapToGrid": 10,
                                     "userConfig": {
-                                        "text": "Edit Metadata"
+                                        "text": "Edit Object",
+                                        "id": "adr-manage-edit-object"
                                     }
                                 },
                                 {
@@ -123,7 +124,8 @@
                                     "jsClass": "MyButton1",
                                     "snapToGrid": 10,
                                     "userConfig": {
-                                        "text": "Edit Permissions"
+                                        "text": "Edit Permissions",
+                                        "id": "adr-manage-edit-object-permissions"
                                     }
                                 },
                                 {
@@ -132,7 +134,8 @@
                                     "jsClass": "MyButton",
                                     "snapToGrid": 10,
                                     "userConfig": {
-                                        "text": "Delete Collection"
+                                        "text": "Delete Object",
+                                        "id": "adr-manage-delete-object"
                                     }
                                 }
                             ]
@@ -648,6 +651,99 @@
                 "allowBlank": false
             },
             "userXType": "fileuploadfield"
+        },
+        {
+            "id": "MyWindow1",
+            "cid": "window",
+            "jsClass": "EditObjectWindow",
+            "snapToGrid": 10,
+            "userConfig": {
+                "title": "Edit Object",
+                "width": 542,
+                "height": 164,
+                "layout": "fit",
+                "id": "adr-edit-obj-window",
+                "cls": "adr-clear"
+            },
+            "userXType": "editObjectWindow",
+            "cn": [
+                {
+                    "id": "MyForm1",
+                    "cid": "form",
+                    "jsClass": "MyForm1",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "title": "-ext-undefined-",
+                        "headerAsText": false,
+                        "frame": true,
+                        "layout": "-ext-undefined-",
+                        "width": "-ext-undefined-"
+                    },
+                    "cn": [
+                        {
+                            "id": "MyTextField3",
+                            "cid": "textfield",
+                            "jsClass": "MyTextField3",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "fieldLabel": "Label",
+                                "anchor": "100%",
+                                "name": "label"
+                            }
+                        },
+                        {
+                            "id": "MyTextField4",
+                            "cid": "textfield",
+                            "jsClass": "MyTextField4",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "fieldLabel": "Owner",
+                                "anchor": "100%",
+                                "name": "owner"
+                            }
+                        },
+                        {
+                            "id": "MyCombo2",
+                            "cid": "combobox",
+                            "jsClass": "MyCombo2",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "fieldLabel": "State",
+                                "anchor": "100%",
+                                "store": "State",
+                                "mode": "local",
+                                "allowBlank": false,
+                                "name": "state",
+                                "displayField": "type",
+                                "value": "-ext-undefined-",
+                                "valueField": "value",
+                                "submitValue": true,
+                                "editable": false,
+                                "triggerAction": "all",
+                                "forceSelection": true
+                            }
+                        },
+                        {
+                            "id": "MyToolbar4",
+                            "cid": "toolbar",
+                            "jsClass": "MyToolbar4",
+                            "dock": "fbar",
+                            "snapToGrid": 10,
+                            "cn": [
+                                {
+                                    "id": "MyButton8",
+                                    "cid": "button",
+                                    "jsClass": "MyButton8",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "text": "Save"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "stores": [
@@ -770,7 +866,7 @@
             "jsClass": "CollectionProperties",
             "snapToGrid": 10,
             "userConfig": {
-                "storeId": "CollectionProperties",
+                "storeId": "ObjectProperties",
                 "baseParams": "{\npid: decodeURIComponent(window.location.pathname.split('/')[3])\n}",
                 "url": "/adrcollection/ajax/getObjectProperties",
                 "autoLoad": true
@@ -888,6 +984,38 @@
                     "snapToGrid": 10,
                     "userConfig": {
                         "name": "img_url"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "MyStore5",
+            "cid": "arraystore",
+            "jsClass": "State",
+            "snapToGrid": 10,
+            "userConfig": {
+                "storeId": "State",
+                "data": "[\n                [\n                    \"Active\",\n                    \"A\"\n                ],\n                [\n                    \"Inactive\",\n                    \"I\"\n                ],\n                [\n                    \"Deleted\",\n                    \"D\"\n                ]\n            ]",
+                "autoLoad": true
+            },
+            "userXType": "state",
+            "cn": [
+                {
+                    "id": "MyField19",
+                    "cid": "datafield",
+                    "jsClass": "MyField19",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "type"
+                    }
+                },
+                {
+                    "id": "MyField20",
+                    "cid": "datafield",
+                    "jsClass": "MyField20",
+                    "snapToGrid": 10,
+                    "userConfig": {
+                        "name": "value"
                     }
                 }
             ]

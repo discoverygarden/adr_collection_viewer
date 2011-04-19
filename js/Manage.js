@@ -117,6 +117,48 @@ Manage = Ext.extend(ManageUi, {
                 download.disable();
             }
         });
+        // Object Properties Panel
+        var editObjectToolbar = this.get('adr-manage-object-properties').getFooterToolbar();
+        var editObject = editObjectToolbar.get('adr-manage-edit-object');
+        var editObjectPermissions = editObjectToolbar.get('adr-manage-edit-object-permissions');
+        var deleteObject = editObjectToolbar.get('adr-manage-delete-object');
+        editObject.addListener('click', function(button, event) {
+            var window = new EditObjectWindow();
+            window.show(this);
+        });
+        editObjectPermissions.addListener('click', function(button, event) {
+            Ext.Msg.alert('Failure', 'This will redirect to the XCAML form, once its available.');
+        });
+        deleteObject.addListener('click', function(button, event) {
+            Ext.Msg.confirm('Delete', 'Are you sure you want to delete this Object?', function(btn, text){
+                if (btn == 'yes') {
+                    var pid = ADRCollection.pid;
+                    Ext.Ajax.request({
+                        url: '/adrcollection/ajax/deleteObject',
+                        success: function(response, opts) {
+                            var obj = Ext.decode(response.responseText);
+                            if(obj.success) {
+                                // Redirect to top collection for now.
+                                var location = window.location;
+                                var page = location.protocol + '//' + location.host + '/fedora/repository/';
+                                window.location = page;
+                            }
+                            else {
+                                Ext.Msg.alert('Failure', obj.msg);
+                            }
+
+                        },
+                        failure: function(response, opts) {
+                            Ext.Msg.alert('Failure', 'Failed to Delete Object.');
+                        },
+                        params: {
+                            pid: pid
+                        }
+                    });
+
+                }
+            });
+        });
     }
 });
 Ext.reg('manage', Manage);

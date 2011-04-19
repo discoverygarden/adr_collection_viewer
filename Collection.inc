@@ -92,8 +92,9 @@ class Collection {
    * @return array
    */
   private function getAllMembers() {
-    $query = 'select $object $title $content from <#ri>
-                             where ($object <dc:title> $title
+    $query = 'select $object $title $description $content from <#ri>
+                             where ($object <info:fedora/fedora-system:def/model#label> $title
+                             and $object <dc:description> $description
                              and $object <fedora-model:hasModel> $content
                              and ($object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
                              or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '>)
@@ -108,8 +109,9 @@ class Collection {
    * @return array
    */
   private function getMemberObjects() {
-    $query = 'select $object $title $content from <#ri>
-                             where ($object <dc:title> $title
+    $query = 'select $object $title $description $content from <#ri>
+                             where ($object <info:fedora/fedora-system:def/model#label> $title
+                             and $object <dc:description> $description
                              and $object <fedora-model:hasModel> $content
                              and ($content <fedora-model:hasModel> <info:fedora/fedora-system:ContentModel-3.0>)
                              and ($object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
@@ -125,8 +127,9 @@ class Collection {
    * @return array
    */
   private function getMemberCollections() {
-    $query = 'select $object $title $content from <#ri>
-                             where ($object <dc:title> $title
+    $query = 'select $object $title $description $content from <#ri>
+                             where ($object <info:fedora/fedora-system:def/model#label> $title
+                             and $object <dc:description> $description
                              and $object <fedora-model:hasModel> $content
                              and ($content <fedora-model:hasModel> <info:fedora/islandora:collectionCModel>)
                              and ($object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
@@ -153,10 +156,14 @@ class Collection {
         $returns = array();
         for ($i = 0; $i < $count; $i++) {
           $result = $query_results->item($i);
-          $title = $path->query('sparql:title', $result)->item(0)->textContent;
+          $title = filter_xss($path->query('sparql:title', $result)->item(0)->textContent);
+          $description = filter_xss($path->query('sparql:description', $result)->item(0)->textContent);
           $pid = substr($path->query('sparql:object/@uri', $result)->item(0)->value, 12); // 12 characteres in "info:fedora/"
           $item = new Fedora_Item($pid);
-          $description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+          if(trim($description) == '') {
+            $description = "This item is missing a description, check &lt;dc:description&gt; to see if its missing or empty.";
+            //$description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lacinia scelerisque tempor. Sed odio sapien, hendrerit a condimentum vel, convallis id nulla. Praesent in augue ut enim adipiscing elementum in sed diam. Nam elementum lobortis egestas. Donec nec felis dui. Ut id nunc lorem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras venenatis commodo nibh, quis tincidunt sapien fringilla ut. Nulla facilisi. Morbi massa lacus, accumsan congue ultrices in, vehicula vel lectus. Ut lacinia, eros non congue auctor, nulla enim rutrum nunc, tincidunt suscipit mi metus at arcu. Praesent non mi at tortor dapibus aliquam dapibus ut leo. In a nibh massa.";
+          }
           $url = "$base_url/fedora/repository/$pid";
           $img_url = "$base_url/fedora/repository/$pid/TN";
           $returns[] = array('title' => $title, 'pid' => $pid, 'description' => $description, 'url' => $url, 'img_url' => $img_url);

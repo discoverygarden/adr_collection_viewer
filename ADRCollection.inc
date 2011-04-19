@@ -168,8 +168,8 @@ class ADRCollection {
   private function getCollectionDescription() {
     $description = $this->collection->getDescription();
     $description = substr($description, 0, 350);
-    if (isset($description)) {
-      return "<table class='adr-collection-description'><tr><th class='adr-collection-description'>Description</th><td class='adr-collection-description'>{$description}<a href='#adr-collection-title' id='adr-show-overview-link'> [Click for more ...]</a></td></tr></table>";
+    if (isset($description) && trim($description) != '') {
+      return "<table class='adr-collection-description'><tr><td class='adr-collection-description'>{$description}<a href='#adr-collection-title' id='adr-show-overview-link'> [Click for more ...]</a></td></tr></table>";
     }
     return NULL;
   }

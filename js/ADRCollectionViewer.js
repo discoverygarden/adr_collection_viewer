@@ -14,14 +14,18 @@
 ADRCollectionViewer = Ext.extend(ADRCollectionViewerUi, {
     initComponent: function() {
         ADRCollectionViewer.superclass.initComponent.call(this);
+        var overview;
         if(typeof(Overview) == "function" && typeof(Overview.prototype) == "object") {
-            this.add(new Overview());
+            overview = this.add(new Overview());
         }
         if(typeof(Content) == "function" && typeof(Content.prototype) == "object") {
             this.activate(this.add(new Content()));
         }
         if(typeof(Manage) == "function" && typeof(Manage.prototype) == "object") {
             this.add(new Manage());
-        }        
+        }
+        if(typeof(overview) != 'undefined' && window.location.hash == "#adr-collection-title") {
+            this.activate(overview);
+        }
     }
 });

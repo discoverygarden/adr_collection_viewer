@@ -100,7 +100,7 @@ function adr_collection_viewer_show($pid) {
   return $viewer->render();
 }
 
-function adr_collection_viewer_get_description($pid) {
+function adr_collection_viewer_get_description() {
   $pid = adr_collection_viewer_get_pid();
   if (isset($pid)) {
     module_load_include('inc', 'adr_collection_viewer', 'AjaxHandler');

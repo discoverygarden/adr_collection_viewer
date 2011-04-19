@@ -83,9 +83,10 @@ class AjaxHandler {
     $description = $object_view->getDescription();
     $content = '';
     foreach ($description as $label => $value) {
+      $value = filter_xss($value, array('a', 'br'));
       $content .= '<tr>';
-      $content .= "<td style='padding:5px;font-size:1.5em;'>$label</td>";
-      $content .= "<td style='padding:5px;font-size:1.2em;'>$value</td>";
+      $content .= "<td style='padding:5px;font-size:1.5em; vertical-align: top;'>$label</td>";
+      $content .= "<td style='padding:5px;font-size:1.2em; vertical-align: middle;'>$value</td>";
       $content .= '</tr>';
     }
     $created = $this->getObjectCreationDate();

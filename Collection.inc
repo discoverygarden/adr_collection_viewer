@@ -155,6 +155,7 @@ class Collection {
           $result = $query_results->item($i);
           $title = $path->query('sparql:title', $result)->item(0)->textContent;
           $pid = substr($path->query('sparql:object/@uri', $result)->item(0)->value, 12); // 12 characteres in "info:fedora/"
+          $item = new Fedora_Item($pid);
           $description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
           $url = "$base_url/fedora/repository/$pid";
           $img_url = "$base_url/fedora/repository/$pid/TN";

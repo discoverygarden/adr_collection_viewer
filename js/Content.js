@@ -57,7 +57,7 @@ Content = Ext.extend(ContentUi, {
         add.addListener('click', function() {
             var location = window.location;
             var page = location.protocol + '//' + location.host + '/formbuilder/ingest/';
-            if(typeof(ADRCollection.pid) != 'undefined') {
+            if(typeof(ADRCollection.pid) != 'undefined' && ADRCollection.pid != 'undefined') {
                 page = page + ADRCollection.pid;
             }
             window.location = page;

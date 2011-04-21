@@ -201,7 +201,7 @@ class Collection {
       $result = $xpath->query('/mods:mods/mods:titleInfo[not(@type)]/mods:title');
       if ($result && $result->length > 0) {
         $title = $result->item(0)->textContent;
-        $result = $xpath->query('/mods:mods/mods:titleInfo[@type=&quot;alternative&quot;]/mods:title');
+        $result = $xpath->query("/mods:mods/mods:titleInfo[@type='alternative']/mods:title");
         if ($result && $result->length > 0) {
           $title = "$title: {$result->item(0)->textContent}";
         }

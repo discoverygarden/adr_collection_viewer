@@ -134,10 +134,10 @@ class Collection {
                              or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '>))
                              minus $content <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
                              order by $object';
-    return $this->query($query, $offset, $limit, true);
+    return $this->query($query, $offset, $limit);
   }
 
-  private function query($query, $offset, $limit, $is_collection_search = false) {
+  private function query($query, $offset, $limit) {
     global $base_url;
     module_load_include('inc', 'fedora_repository', 'CollectionClass');
     $collection_class = new CollectionClass();
@@ -155,7 +155,8 @@ class Collection {
           $result = $query_results->item($i);
           $pid = substr($path->query('sparql:object/@uri', $result)->item(0)->value, 12); // 12 characteres in "info:fedora/"
           $item = new Fedora_Item($pid);
-          $title = "Default Title, Check this object's metadata and ensure a title is present.";
+          $collection =
+              $title = "Default Title, Check this object's metadata and ensure a title is present.";
           $description = "Default Description, Check this object's metadata and ensure a description is present.";
           if ($result = $this->getTitleAndDescriptionFromMods($item)) {
             list($mods_title, $mods_description) = $result;
@@ -169,7 +170,8 @@ class Collection {
           }
           $url = "$base_url/fedora/repository/$pid";
           $img_url = "$base_url/fedora/repository/$pid/TN";
-          if($is_collection_search || isset($item->datastreams['COLLECTION_POLICY'])) {
+
+          if ($this->isCollection($item)) {
             $img_url = "$base_url/" . drupal_get_path('module', 'adr_collection_viewer') . '/images/collection.png';
           }
           $returns[] = array('title' => $title, 'pid' => $pid, 'description' => $description, 'url' => $url, 'img_url' => $img_url);
@@ -178,6 +180,27 @@ class Collection {
       }
     }
     return array();
+  }
+
+  /**
+   * 
+   */
+  private function isCollection(&$fedora_item) {
+    $model_pid = $this->getModelPid($fedora_item);
+    $model = new Fedora_Item($model_pid);
+    $parent_model_pid = $this->getModelPid($model);
+    return $parent_model_pid == 'islandora:collectionCModel';
+  }
+
+  private function getModelPid(&$fedora_item) {
+    $rels_ext = $fedora_item->get_datastream_dissemination('RELS-EXT');
+    $doc = new DOMDocument();
+    $doc->loadXML($rels_ext);
+    $xpath = new DOMXPath($doc);
+    $xpath->registerNamespace('rdf', "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+    $xpath->registerNamespace('fedora-model', "info:fedora/fedora-system:def/model#");
+    $results = $xpath->query('/rdf:RDF/rdf:Description/fedora-model:hasModel/@rdf:resource');
+    return substr($results->item(0)->value, 12); // 12 characteres in "info:fedora/"
   }
 
   /**

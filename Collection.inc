@@ -7,7 +7,6 @@
  *
  */
 class Collection {
-
   const mods = 'http://www.loc.gov/standards/mods/v3';
   const xlink = 'http://www.w3.org/1999/xlink';
   const xsi = 'http://www.w3.org/2001/XMLSchema-instance';
@@ -84,8 +83,12 @@ class Collection {
         break;
       case 'all':
       default:
-        $data = $this->getAllMembers();
-        list($data, $count) = $this->refineSearch($data, $offset, $limit, $search_type, $search_text);
+        $data = $this->getMemberCollections();
+        list($mem_data, $mem_count) = $this->refineSearch($data, $offset, $limit, $search_type, $search_text);
+        $data = $this->getMemberObjects();
+        list($obj_data, $obj_count) = $this->refineSearch($data, $offset, $limit, $search_type, $search_text);
+        $count = $mem_count + $obj_count;
+        $data = array_merge($mem_data, $obj_data);
         break;
     }
     return array('success' => true, 'data' => $data, 'total' => $count);
@@ -135,10 +138,10 @@ class Collection {
                              or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '>))
                              minus $content <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
                              order by $object';
-    return $this->query($query, $offset, $limit);
+    return $this->query($query, $offset, $limit, true);
   }
 
-  private function query($query, $offset, $limit) {
+  private function query($query, $offset, $limit, $is_collection_search = false) {
     global $base_url;
     module_load_include('inc', 'fedora_repository', 'CollectionClass');
     $collection_class = new CollectionClass();
@@ -170,6 +173,9 @@ class Collection {
           }
           $url = "$base_url/fedora/repository/$pid";
           $img_url = "$base_url/fedora/repository/$pid/TN";
+          if($is_collection_search) {
+            $img_url = "$base_url/" . drupal_get_path('module', 'adr_collection_viewer') . '/images/collection.png';
+          }
           $returns[] = array('title' => $title, 'pid' => $pid, 'description' => $description, 'url' => $url, 'img_url' => $img_url);
         }
         return $returns;

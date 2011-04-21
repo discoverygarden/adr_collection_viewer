@@ -96,6 +96,8 @@ function adr_collection_viewer_get_pid() {
 function adr_collection_viewer_show($pid) {
   theme();
   module_load_include('inc', 'adr_collection_viewer', 'ADRCollection');
+  module_load_include('inc', 'fedora_repository', 'api/fedora_item');
+  var_dump(new Fedora_Item($pid));
   $viewer = new ADRCollection($pid);
   $viewer->render();
   return "<div id='content-fedora'></div>";

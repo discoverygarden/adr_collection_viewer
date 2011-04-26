@@ -76,15 +76,18 @@ class Collection {
       case 'collections':
         $data = $this->getMemberCollections();
         list($data, $count) = $this->refineSearch($data, $offset, $limit, $search_type, $search_text);
+        $this->populateResults($data);
         break;
       case 'objects':
         $data = $this->getMemberObjects();
         list($data, $count) = $this->refineSearch($data, $offset, $limit, $search_type, $search_text);
+        $this->populateResults($data);
         break;
       case 'all':
       default:
         $data = $this->getAllMembers();
         list($data, $count) = $this->refineSearch($data, $offset, $limit, $search_type, $search_text);
+        $this->populateResults($data);
         break;
     }
     return array('success' => true, 'data' => $data, 'total' => $count);
@@ -95,14 +98,17 @@ class Collection {
    * @return array
    */
   private function getAllMembers() {
-    $query = 'select $object $content from <#ri>
-                             where ($object <fedora-model:hasModel> $content
+    $query = 'select $object $title $model $parent_model from <#ri>
+                             where ($object <info:fedora/fedora-system:def/model#label> $title
+                             and $object <fedora-model:hasModel> $model
+                             and $model <fedora-model:hasModel> $parent_model
                              and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>
                              and ($object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
                              or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '>))
-                             minus $content <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
-                             order by $object';
-    return $this->query($query, $offset, $limit);
+                             minus $model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>  
+                             minus $parent_model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
+                             order by $title';
+    return $this->query($query);
   }
 
   /**
@@ -110,15 +116,18 @@ class Collection {
    * @return array
    */
   private function getMemberObjects() {
-    $query = 'select $object $content from <#ri>
-                             where ($object <fedora-model:hasModel> $content
-                             and $content <fedora-model:hasModel> <info:fedora/fedora-system:ContentModel-3.0>
+    $query = 'select $object $title $model $parent_model from <#ri>
+                             where ($object <info:fedora/fedora-system:def/model#label> $title
+                             and $object <fedora-model:hasModel> $model
+                             and $model <fedora-model:hasModel> $parent_model
+                             and $parent_model <mulgara:is> <info:fedora/fedora-system:ContentModel-3.0>
                              and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>
                              and ($object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
                              or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '>))
-                             minus $content <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
-                             order by $object';
-    return $this->query($query, $offset, $limit);
+                             minus $model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>  
+                             minus $parent_model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
+                             order by $title';
+    return $this->query($query);
   }
 
   /**
@@ -126,22 +135,25 @@ class Collection {
    * @return array
    */
   private function getMemberCollections() {
-    $query = 'select $object $content from <#ri>
-                             where ($object <fedora-model:hasModel> $content
-                             and $content <fedora-model:hasModel> <info:fedora/islandora:collectionCModel>
+    $query = 'select $object $title $model $parent_model from <#ri>
+                             where ($object <info:fedora/fedora-system:def/model#label> $title
+                             and $object <fedora-model:hasModel> $model
+                             and $model <fedora-model:hasModel> $parent_model
+                             and $parent_model <mulgara:is> <info:fedora/islandora:collectionCModel>
                              and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>
                              and ($object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
                              or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '>))
-                             minus $content <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
-                             order by $object';
-    return $this->query($query, $offset, $limit);
+                             minus $model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>  
+                             minus $parent_model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
+                             order by $title';
+    return $this->query($query);
   }
 
-  private function query($query, $offset, $limit) {
+  private function query($query) {
     global $base_url;
     module_load_include('inc', 'fedora_repository', 'CollectionClass');
     $collection_class = new CollectionClass();
-    $results = $collection_class->getRelatedObjects($this->pid, $limit, $offset, $query);
+    $results = $collection_class->getRelatedObjects($this->pid, NULL, NULL, $query);
     if ($results != ' ') {
       $doc = new DOMDocument();
       $doc->loadXML(trim($results));
@@ -154,27 +166,9 @@ class Collection {
         for ($i = 0; $i < $count; $i++) {
           $result = $query_results->item($i);
           $pid = substr($path->query('sparql:object/@uri', $result)->item(0)->value, 12); // 12 characteres in "info:fedora/"
-          $item = new Fedora_Item($pid);
-          $collection =
-              $title = "Default Title, Check this object's metadata and ensure a title is present.";
-          $description = "Default Description, Check this object's metadata and ensure a description is present.";
-          if ($result = $this->getTitleAndDescriptionFromMods($item)) {
-            list($mods_title, $mods_description) = $result;
-            $title = $mods_title != '' ? $mods_title : $title;
-            $description = $mods_description != '' ? $mods_description : $description;
-          }
-          else if ($result = $this->getTitleAndDescriptionFromDC($item)) {
-            list($mods_title, $mods_description) = $result;
-            $title = $mods_title != '' ? $mods_title : $title;
-            $description = $mods_description != '' ? $mods_description : $description;
-          }
-          $url = "$base_url/fedora/repository/$pid";
-          $img_url = "$base_url/fedora/repository/$pid/TN";
-
-          if ($this->isCollection($item)) {
-            $img_url = "$base_url/" . drupal_get_path('module', 'adr_collection_viewer') . '/images/collection.png';
-          }
-          $returns[] = array('title' => $title, 'pid' => $pid, 'description' => $description, 'url' => $url, 'img_url' => $img_url);
+          $title = $path->query('sparql:title', $result)->item(0)->textContent;
+          $parent_model = substr($path->query('sparql:parent_model/@uri', $result)->item(0)->value, 12);
+          $returns[] = array('title' => $title, 'pid' => $pid, 'parent_model'=> $parent_model);
         }
         return $returns;
       }
@@ -266,14 +260,14 @@ class Collection {
       switch ($search_type) {
         case 'start':
           $data = array_filter($data, function ($item) use ($search_text) {
-                    return preg_match("/^{$search_text}.*/i", $item['title']) != 0;
-                  });
+                return preg_match("/^{$search_text}.*/i", $item['title']) != 0;
+              });
           break;
         case 'contains':
         default:
           $data = array_filter($data, function ($item) use ($search_text) {
-                    return preg_match("/^.*{$search_text}.*/i", $item['title']) != 0;
-                  });
+                return preg_match("/^.*{$search_text}.*/i", $item['title']) != 0;
+              });
           break;
       }
       $count = count($data);
@@ -299,6 +293,31 @@ class Collection {
       return $path->evaluate('count(//sparql:result)');
     }
     return 0;
+  }
+
+  private function populateResults(&$results) {
+    foreach ($results as &$result) {
+      $pid = $result['pid'];
+      $parent_model = $result['parent_model'];
+      unset($result['parent_model']); // Don't need to return this info to javascript...
+      $item = new Fedora_Item($pid);
+      $description = "Default Description, Check this object's metadata and ensure a description is present.";
+      if ($info = $this->getTitleAndDescriptionFromMods($item)) {
+        list($mods_title, $mods_description) = $info;
+        //$title = $mods_title != '' ? $mods_title : $title;
+        $result['description'] = $mods_description != '' ? $mods_description : $description;
+      }
+      else if ($info = $this->getTitleAndDescriptionFromDC($item)) {
+        list($dc_title, $dc_description) = $info;
+        //$title = $mods_title != '' ? $mods_title : $title;
+        $result['description'] = $dc_description != '' ? $dc_description : $description;
+      }
+      $result['url'] = "$base_url/fedora/repository/$pid";
+      $result['img_url'] = "$base_url/fedora/repository/$pid/TN";
+      if ($parent_model == 'islandora:collectionCModel') {
+        $result['img_url'] = "$base_url/" . drupal_get_path('module', 'adr_collection_viewer') . '/images/collection.png';
+      }
+    }
   }
 
   private function getSolr() {

@@ -366,7 +366,8 @@
                                 "boxMinWidth": "-ext-undefined-",
                                 "minWidth": 75,
                                 "id": "adr-content-filter",
-                                "prependText": "Show "
+                                "prependText": "Show ",
+                                "width": 130
                             },
                             "cn": [
                                 {
@@ -411,6 +412,84 @@
                             }
                         },
                         {
+                            "id": "MyLabel2",
+                            "cid": "label",
+                            "jsClass": "MyLabel",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "text": "Sort: "
+                            }
+                        },
+                        {
+                            "id": "MySpacer4",
+                            "cid": "spacer",
+                            "jsClass": "MySpacer1",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "width": 10
+                            }
+                        },
+                        {
+                            "id": "MyCycleButton1",
+                            "cid": "cyclebutton",
+                            "jsClass": "MyCycleButton1",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "showText": true,
+                                "prependText": "-ext-undefined-",
+                                "id": "adr-content-sort",
+                                "width": 80
+                            },
+                            "cn": [
+                                {
+                                    "id": "MyCheckItem3",
+                                    "cid": "menucheckitem",
+                                    "jsClass": "MyCheckItem3",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "text": "Title A-Z",
+                                        "checked": true
+                                    }
+                                },
+                                {
+                                    "id": "MyCheckItem4",
+                                    "cid": "menucheckitem",
+                                    "jsClass": "MyCheckItem4",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "text": "Title Z-A"
+                                    }
+                                },
+                                {
+                                    "id": "MyCheckItem5",
+                                    "cid": "menucheckitem",
+                                    "jsClass": "MyCheckItem5",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "text": "Newest"
+                                    }
+                                },
+                                {
+                                    "id": "MyCheckItem6",
+                                    "cid": "menucheckitem",
+                                    "jsClass": "MyCheckItem5",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "text": "Oldest"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "id": "MySpacer3",
+                            "cid": "tbspacer",
+                            "jsClass": "MySpacer3",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "width": 5
+                            }
+                        },
+                        {
                             "id": "MyLabel1",
                             "cid": "label",
                             "jsClass": "MyLabel1",
@@ -435,16 +514,8 @@
                             "jsClass": "MyTriggerField",
                             "snapToGrid": 10,
                             "userConfig": {
-                                "id": "adr-content-search-text"
-                            }
-                        },
-                        {
-                            "id": "MySpacer3",
-                            "cid": "tbspacer",
-                            "jsClass": "MySpacer3",
-                            "snapToGrid": 10,
-                            "userConfig": {
-                                "width": 5
+                                "id": "adr-content-search-text",
+                                "width": 300
                             }
                         },
                         {
@@ -488,7 +559,7 @@
                             "userConfig": {
                                 "itemSelector": "div",
                                 "store": "CollectionMembers",
-                                "tpl": "<tpl for=\".\">\n<div class=\"adr-content-item\">\n<table>\n<tr><th class=\"adr-content-item-icon-block\" rowspan=\"2\"><a href='{url}'><img src=\"{img_url}\" class=\"adr-content-item-icon\"/></a></th><th><a href='{url}' title=\"{title}\"><h2 class=\"adr-content-item-title\">{[fm.ellipsis(values.title, 71, false)]} </h2></a></th></tr>\n<tr><td class=\"adr-content-item-description\">{[fm.ellipsis(values.description, 350, true)]} <a href='{url}#adr-collection-title' class=\"adr-content-item-link\"> [Click for more]</a></td></tr>\n</table>\n</div>\n</tpl>",
+                                "tpl": "<tpl for=\".\">\n    <div class=\"adr-content-item\">\n        <table>\n            <tr>\n                <th class=\"adr-content-item-icon-block\" rowspan=\"2\">\n                    <a href='{url}'>\n                        <img src=\"{img_url}\" class=\"adr-content-item-icon\"></img>\n                    </a>\n                </th>\n                <th>\n                    <a href='{url}' title=\"{title}\">\n                        <h2 class=\"adr-content-item-title\">{[fm.ellipsis(values.title, 71, false)]} </h2>\n                    </a>\n                </th>\n            </tr>\n            <tr>\n                <td class=\"adr-content-item-description\">{[fm.ellipsis(values.description, 350, true)]} <a href='{url}#adr-collection-title' class=\"adr-content-item-link\"> [Click for more]</a></td>\n            </tr>\n        </table>\n    </div>\n</tpl>",
                                 "loadingText": "Loading Please Wait...",
                                 "emptyText": "<div>There are no sub-collections or objects within this collection.</div>",
                                 "deferEmptyText": "-ext-undefined-"

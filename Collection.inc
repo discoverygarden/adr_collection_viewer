@@ -71,22 +71,22 @@ class Collection {
    * @param string $search_text
    * @return array
    */
-  public function getMembers($offset, $limit, $filter, $search_type, $search_text) {
+  public function getMembers($offset, $limit, $filter, $sort, $search_text) {
     switch ($filter) {
       case 'collections':
         $data = $this->getMemberCollections();
-        list($data, $count) = $this->refineSearch($data, $offset, $limit, $search_type, $search_text);
+        list($data, $count) = $this->refineSearch($data, $offset, $limit, $sort, $search_text);
         $this->populateResults($data);
         break;
       case 'objects':
         $data = $this->getMemberObjects();
-        list($data, $count) = $this->refineSearch($data, $offset, $limit, $search_type, $search_text);
+        list($data, $count) = $this->refineSearch($data, $offset, $limit, $sort, $search_text);
         $this->populateResults($data);
         break;
       case 'all':
       default:
         $data = $this->getAllMembers();
-        list($data, $count) = $this->refineSearch($data, $offset, $limit, $search_type, $search_text);
+        list($data, $count) = $this->refineSearch($data, $offset, $limit, $sort, $search_text);
         $this->populateResults($data);
         break;
     }
@@ -98,9 +98,10 @@ class Collection {
    * @return array
    */
   private function getAllMembers() {
-    $query = 'select $object $title $model $parent_model from <#ri>
+    $query = 'select $object $title $model $parent_model $created from <#ri>
                              where ($object <info:fedora/fedora-system:def/model#label> $title
                              and $object <fedora-model:hasModel> $model
+                             and $object <fedora-model:createdDate> $created
                              and $model <fedora-model:hasModel> $parent_model
                              and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>
                              and ($object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
@@ -116,8 +117,9 @@ class Collection {
    * @return array
    */
   private function getMemberObjects() {
-    $query = 'select $object $title $model $parent_model from <#ri>
+    $query = 'select $object $title $model $parent_model $created from <#ri>
                              where ($object <info:fedora/fedora-system:def/model#label> $title
+                             and $object <fedora-model:createdDate> $created
                              and $object <fedora-model:hasModel> $model
                              and $model <fedora-model:hasModel> $parent_model
                              and $parent_model <mulgara:is> <info:fedora/fedora-system:ContentModel-3.0>
@@ -135,8 +137,9 @@ class Collection {
    * @return array
    */
   private function getMemberCollections() {
-    $query = 'select $object $title $model $parent_model from <#ri>
+    $query = 'select $object $title $model $parent_model $created from <#ri>
                              where ($object <info:fedora/fedora-system:def/model#label> $title
+                             and $object <fedora-model:createdDate> $created
                              and $object <fedora-model:hasModel> $model
                              and $model <fedora-model:hasModel> $parent_model
                              and $parent_model <mulgara:is> <info:fedora/islandora:collectionCModel>
@@ -167,8 +170,9 @@ class Collection {
           $result = $query_results->item($i);
           $pid = substr($path->query('sparql:object/@uri', $result)->item(0)->value, 12); // 12 characteres in "info:fedora/"
           $title = $path->query('sparql:title', $result)->item(0)->textContent;
+          $created = $path->query('sparql:created', $result)->item(0)->textContent;
           $parent_model = substr($path->query('sparql:parent_model/@uri', $result)->item(0)->value, 12);
-          $returns[] = array('title' => $title, 'pid' => $pid, 'parent_model' => $parent_model);
+          $returns[] = array('title' => $title, 'pid' => $pid, 'parent_model' => $parent_model, 'created' => $created);
         }
         return $returns;
       }
@@ -255,20 +259,66 @@ class Collection {
     return FALSE;
   }
 
-  private function refineSearch($data, $offset, $limit, $search_type, $search_text) {
+  private function refineSearch($data, $offset, $limit, $sort, $search_text) {
     if (isset($search_text) && trim($search_text) != '') {
       $data = array_filter($data, function ($item) use ($search_text) {
             return preg_match("/^.*{$search_text}.*/i", $item['title']) != 0;
           });
+      $this->sort($data, $sort);
       $count = count($data);
       $data = array_slice($data, $offset, $limit);
       return array($data, $count);
     }
     else {
+      $this->sort($data, $sort);
       $count = count($data);
       $data = array_slice($data, $offset, $limit);
       return array($data, $count);
     }
+  }
+
+  private function sort(array &$data, $sort) {
+    switch ($sort) {
+      case 'alpha-desc':
+        usort($data, array($this, 'alpha_desc_sort'));
+        break;
+      case 'date-newest':
+        usort($data, array($this, 'date_newest_sort'));
+        break;
+      case 'date-oldest':
+        usort($data, array($this, 'date_oldest_sort'));
+        break;
+      case 'alpha-asc':
+      default:
+        usort($data, array($this, 'alpha_asc_sort'));
+        break;
+    }
+  }
+
+  private function alpha_asc_sort($a, $b) {
+    return strcmp($a['title'], $b['title']);
+  }
+
+  private function alpha_desc_sort($a, $b) {
+    return strcmp($b['title'], $a['title']);
+  }
+
+  private function date_newest_sort($a, $b) {
+    $a = strtotime($a['created']);
+    $b = strtotime($b['created']);
+    if ($a == $b) {
+      return 0;
+    }
+    return ($a > $b) ? -1 : 1;
+  }
+
+  private function date_oldest_sort($a, $b) {
+    $a = strtotime($a['created']);
+    $b = strtotime($b['created']);
+    if ($a == $b) {
+      return 0;
+    }
+    return ($a < $b) ? -1 : 1;
   }
 
   private function count($query) {

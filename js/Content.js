@@ -17,6 +17,7 @@ Content = Ext.extend(ContentUi, {
         var toolbar = this.getTopToolbar();
         var content_panel = this.get('adr-content-panel');
         var filter = toolbar.get('adr-content-filter');
+        var sort = toolbar.get('adr-content-sort');
         var search_text = toolbar.get('adr-content-search-text');
         var add = toolbar.get('adr-content-add');
         content_panel.addListener('afterrender', function() {
@@ -32,6 +33,19 @@ Content = Ext.extend(ContentUi, {
             var pager = content_panel.getFooterToolbar();
             var lastOptions = pager.store.lastOptions;
             lastOptions.params.filter = filter[this.activeItem.text];
+            pager.store.reload(lastOptions);
+        });
+        
+        sort.addListener('change', function() {
+            var sort = {
+                "Title A-Z": 'alpha-asc',
+                "Title Z-A": 'alpha-desc',
+                "Newest": 'date-newest',
+                "Oldest": 'date-oldest'
+            };
+            var pager = content_panel.getFooterToolbar();
+            var lastOptions = pager.store.lastOptions;
+            lastOptions.params.sort = sort[this.activeItem.text];
             pager.store.reload(lastOptions);
         });
 

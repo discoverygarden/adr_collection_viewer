@@ -231,12 +231,12 @@ function adr_collection_viewer_get_collection_members() {
   $start = isset($_REQUEST['start']) ? $_REQUEST['start'] : 0;
   $limit = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 10;
   $filter = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : 'all';
-  $search_type = isset($_REQUEST['search_type']) ? $_REQUEST['search_type'] : 'start';
+  $sort = isset($_REQUEST['sort']) ? $_REQUEST['sort'] : 'alpha-asc';
   $search_text = isset($_REQUEST['search_text']) ? $_REQUEST['search_text'] : '';
   if (isset($pid)) { 
     module_load_include('inc', 'adr_collection_viewer', 'Collection');
     $collection = new Collection($pid);
-    $response = $collection->getMembers($start, $limit, $filter, $search_type, $search_text);
+    $response = $collection->getMembers($start, $limit, $filter, $sort, $search_text);
     echo json_encode($response);
   }
 }

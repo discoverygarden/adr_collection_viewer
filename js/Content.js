@@ -17,7 +17,6 @@ Content = Ext.extend(ContentUi, {
         var toolbar = this.getTopToolbar();
         var content_panel = this.get('adr-content-panel');
         var filter = toolbar.get('adr-content-filter');
-        var search_type = toolbar.get('adr-content-search-type');
         var search_text = toolbar.get('adr-content-search-text');
         var add = toolbar.get('adr-content-add');
         content_panel.addListener('afterrender', function() {
@@ -33,17 +32,6 @@ Content = Ext.extend(ContentUi, {
             var pager = content_panel.getFooterToolbar();
             var lastOptions = pager.store.lastOptions;
             lastOptions.params.filter = filter[this.activeItem.text];
-            pager.store.reload(lastOptions);
-        });
-
-        search_type.addListener('change', function() {
-            var search_type = {
-                "Starts With": 'starts',
-                "Contains": 'contains'
-            };
-            var pager = content_panel.getFooterToolbar();
-            var lastOptions = pager.store.lastOptions;
-            lastOptions.params.search_type = search_type[this.activeItem.text];
             pager.store.reload(lastOptions);
         });
 

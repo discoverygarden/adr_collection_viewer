@@ -447,37 +447,6 @@
                             }
                         },
                         {
-                            "id": "MyCycleButton1",
-                            "cid": "cyclebutton",
-                            "jsClass": "MyCycleButton1",
-                            "snapToGrid": 10,
-                            "userConfig": {
-                                "showText": true,
-                                "id": "adr-content-search-type"
-                            },
-                            "cn": [
-                                {
-                                    "id": "MyCheckItem3",
-                                    "cid": "menucheckitem",
-                                    "jsClass": "MyCheckItem3",
-                                    "snapToGrid": 10,
-                                    "userConfig": {
-                                        "text": "Starts With",
-                                        "checked": true
-                                    }
-                                },
-                                {
-                                    "id": "MyCheckItem4",
-                                    "cid": "menucheckitem",
-                                    "jsClass": "MyCheckItem4",
-                                    "snapToGrid": 10,
-                                    "userConfig": {
-                                        "text": "Contains"
-                                    }
-                                }
-                            ]
-                        },
-                        {
                             "id": "MyFill",
                             "cid": "tbfill",
                             "jsClass": "MyFill",

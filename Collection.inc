@@ -168,7 +168,7 @@ class Collection {
           $pid = substr($path->query('sparql:object/@uri', $result)->item(0)->value, 12); // 12 characteres in "info:fedora/"
           $title = $path->query('sparql:title', $result)->item(0)->textContent;
           $parent_model = substr($path->query('sparql:parent_model/@uri', $result)->item(0)->value, 12);
-          $returns[] = array('title' => $title, 'pid' => $pid, 'parent_model'=> $parent_model);
+          $returns[] = array('title' => $title, 'pid' => $pid, 'parent_model' => $parent_model);
         }
         return $returns;
       }
@@ -257,19 +257,9 @@ class Collection {
 
   private function refineSearch($data, $offset, $limit, $search_type, $search_text) {
     if (isset($search_text) && trim($search_text) != '') {
-      switch ($search_type) {
-        case 'start':
-          $data = array_filter($data, function ($item) use ($search_text) {
-                return preg_match("/^{$search_text}.*/i", $item['title']) != 0;
-              });
-          break;
-        case 'contains':
-        default:
-          $data = array_filter($data, function ($item) use ($search_text) {
-                return preg_match("/^.*{$search_text}.*/i", $item['title']) != 0;
-              });
-          break;
-      }
+      $data = array_filter($data, function ($item) use ($search_text) {
+            return preg_match("/^.*{$search_text}.*/i", $item['title']) != 0;
+          });
       $count = count($data);
       $data = array_slice($data, $offset, $limit);
       return array($data, $count);

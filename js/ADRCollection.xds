@@ -326,7 +326,8 @@
                 "defaults": "-ext-undefined-",
                 "hideBorders": "-ext-undefined-",
                 "floating": "-ext-undefined-",
-                "layout": "fit"
+                "layout": "fit",
+                "unstyled": "-ext-undefined-"
             },
             "userXType": "Content",
             "cn": [
@@ -474,7 +475,9 @@
                         "frame": true,
                         "id": "adr-content-panel",
                         "layout": "-ext-undefined-",
-                        "border": "-ext-undefined-"
+                        "border": "-ext-undefined-",
+                        "shadowOffset": "-ext-undefined-",
+                        "unstyled": true
                     },
                     "cn": [
                         {
@@ -500,6 +503,21 @@
                             "userConfig": {
                                 "store": "CollectionMembers",
                                 "pageSize": 10
+                            }
+                        },
+                        {
+                            "id": "MyPagingToolbar2",
+                            "cid": "pagingtoolbar",
+                            "jsClass": "MyPagingToolbar2",
+                            "dock": "tbar",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "store": "CollectionMembers",
+                                "height": "-ext-undefined-",
+                                "width": "-ext-undefined-",
+                                "pageSize": 10,
+                                "buttonAlign": "right",
+                                "displayInfo": true
                             }
                         }
                     ]

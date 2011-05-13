@@ -153,7 +153,7 @@ class Collection {
     global $base_url;
     module_load_include('inc', 'fedora_repository', 'CollectionClass');
     $collection_class = new CollectionClass();
-    $results = $collection_class->getRelatedObjects($this->pid, NULL, NULL, $query);
+    $results = $collection_class->getRelatedObjects($this->pid, 1000000, NULL, $query);
     if ($results != ' ') {
       $doc = new DOMDocument();
       $doc->loadXML(trim($results));

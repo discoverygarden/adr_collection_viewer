@@ -353,7 +353,12 @@ class Collection {
         $result['description'] = $dc_description != '' ? $dc_description : $description;
       }
       $result['url'] = "$base_url/fedora/repository/$pid";
-      $result['img_url'] = "$base_url/fedora/repository/$pid/TN";
+      if (isset($item->datastreams['TN'])) {
+        $result['img_url'] = "$base_url/fedora/repository/$pid/TN";
+      }
+      else {
+        $result['img_url'] = "$base_url/" . drupal_get_path('module', 'adr_collection_viewer') . '/images/object.png';
+      }
       if ($parent_model == 'islandora:collectionCModel') {
         $result['img_url'] = "$base_url/" . drupal_get_path('module', 'adr_collection_viewer') . '/images/collection.png';
       }

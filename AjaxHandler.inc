@@ -78,7 +78,7 @@ class AjaxHandler {
    * @return array
    */
   public function getDescription() {
-    module_load_include('inc', 'adr_collection_viewer', 'ObjectViewDescription');
+    module_load_include('inc', 'adr_basic_viewer', 'ObjectViewDescription');
     $object_view = new ObjectViewDescription($this->item, $this->getContentModel());
     $description = $object_view->getDescription();
     $content = '';

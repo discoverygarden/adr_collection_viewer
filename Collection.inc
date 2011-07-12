@@ -336,6 +336,7 @@ class Collection {
   }
 
   private function populateResults(&$results) {
+    global $base_url;
     foreach ($results as &$result) {
       $pid = $result['pid'];
       $parent_model = $result['parent_model'];

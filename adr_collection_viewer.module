@@ -18,64 +18,64 @@ function adr_collection_viewer_menu() {
     'title' => 'Viewer',
     'page callback' => 'adr_collection_viewer_show',
     'access arguments' => array('view detailed list of content'),
-    'type' => MENU_NORMAL_ITEM,
+    'type' => MENU_CALLBACK,
   );
 
   $items['adrcollection/ajax/getDescription'] = array(
     'page callback' => 'adr_collection_viewer_get_description',
     'access arguments' => array('view detailed list of content'),
-    'type' => MENU_NORMAL_ITEM,
+    'type' => MENU_CALLBACK,
   );
 
   $items['adrcollection/ajax/getObjectProperties'] = array(
     'page callback' => 'adr_collection_viewer_get_object_properties',
     'access arguments' => array('view detailed list of content'),
-    'type' => MENU_NORMAL_ITEM,
+    'type' => MENU_CALLBACK,
   );
 
   $items['adrcollection/ajax/setObjectProperties'] = array(
     'page callback' => 'adr_collection_viewer_set_object_properties',
     'access arguments' => array('edit fedora meta data'),
-    'type' => MENU_NORMAL_ITEM,
+    'type' => MENU_CALLBACK,
   );
 
   $items['adrcollection/ajax/deleteObject'] = array(
     'page callback' => 'adr_collection_viewer_delete_object',
     'access arguments' => array('edit fedora meta data'),
-    'type' => MENU_NORMAL_ITEM,
+    'type' => MENU_CALLBACK,
   );
 
   $items['adrcollection/ajax/getDatastreams'] = array(
     'page callback' => 'adr_collection_viewer_get_datastreams',
     'access arguments' => array('view detailed list of content'),
-    'type' => MENU_NORMAL_ITEM,
+    'type' => MENU_CALLBACK,
   );
 
   $items['adrcollection/ajax/addDatastream'] = array(
     'page callback' => 'adr_collection_viewer_add_datastream',
     'access arguments' => array('add fedora datastreams'),
     'access callback' => 'user_access',
-    'type' => MENU_NORMAL_ITEM,
+    'type' => MENU_CALLBACK,
   );
   $items['adrcollection/ajax/removeDatastream'] = array(
     'page callback' => 'adr_collection_viewer_remove_datastream',
     'access arguments' => array('purge objects and datastreams'),
     'access callback' => 'user_access',
-    'type' => MENU_NORMAL_ITEM,
+    'type' => MENU_CALLBACK,
   );
 
   $items['adrcollection/ajax/getAllowedMIMETypes'] = array(
     'page callback' => 'adr_collection_viewer_get_allowed_mime_types',
     'access arguments' => array('add fedora datastreams'),
     'access callback' => 'user_access',
-    'type' => MENU_NORMAL_ITEM,
+    'type' => MENU_CALLBACK,
   );
 
   $items['adrcollection/ajax/getCollectionMembers'] = array(
     'page callback' => 'adr_collection_viewer_get_collection_members',
     'access arguments' => array('view detailed list of content'),
     'access callback' => 'user_access',
-    'type' => MENU_NORMAL_ITEM,
+    'type' => MENU_CALLBACK,
   );
 
   return $items;

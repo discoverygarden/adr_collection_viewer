@@ -1,92 +1,84 @@
-/* 
-    Document   : ADRCollection
-    Created on : Apr 2, 2011, 5:06:17 PM
-    Author     : nbanks
-    Description:
-        Purpose of the stylesheet follows.
-*/
-
-/* 
-   TODO customize this sample style
-   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
-*/
-
 h1.adr-collection-title {
-    font-size: 3em;
+     font-size: 2em;
+     margin: 5px 0px;
 }
 
 table.adr-collection-description {
-    padding: 5px;
+     margin: 5px 0px;
 }
 
 th.adr-collection-description {
-    vertical-align: top;
-    text-align: center;
-    padding: 10px;
+     padding: 10px;
+     text-align: center;
+     vertical-align: top;
 }
 
 td.adr-collection-description {
-    padding: 10px;
+     padding: 10px;
 }
 
 .adr-add-file-icon {
-    background-image:url(../images/icon/add.png);
+     background-image: url("../images/icon/add.png");
 }
 
 .adr-edit-file-icon {
-    background-image:url(../images/icon/edit.gif);
+     background-image: url("../images/icon/edit.gif");
 }
 
 .adr-view-file-icon {
-    background-image:url(../images/icon/view.gif);
+     background-image: url("../images/icon/view.gif");
 }
 
 .adr-download-file-icon {
-    background-image:url(../images/icon/blue_down.png);
+     background-image: url("../images/icon/blue_down.png");
 }
 
 .adr-delete-file-icon {
-    background-image:url(../images/icon/remove.png);
+     background-image: url("../images/icon/remove.png");
 }
 
 #adr-manage-collection-properties th {
-    padding-right: 10px;
+     padding-right: 10px;
 }
 
 .x-list-selected {
-    background-color: #ffff00;
+     background-color: #FFFF00;
 }
 
 .x-list-over {
-    background-color: #eeeebb;
+     background-color: #EEEEBB;
 }
 
 .adr-content-item {
-    padding-bottom: 4px;
-    height: 80px;
+     height: 64px;
+     margin: 8px 0px;
+     padding: 4px 0px;
 }
 
 .adr-content-item-title {
-    font-size: 1.99em;
-    text-decoration:underline;
-    padding-bottom: 2px;
+     font-size: 1.5em;
+     margin-bottom: -5px;
 }
-.adr-content-item-icon-block {
-    width: 64px;
-    height: 64px;
-    padding: 5px;
-}
-.adr-content-item-icon {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 64px;
-    height: 64px;
-}
-.adr-content-item-description {
-    font-size: 1.1em;
-    padding: 1px;
-}
-.adr-content-item-link {
 
+.adr-content-item-icon-block {
+     height: 64px;
+     width: 64px;
+}
+
+.adr-content-item-icon {
+     border: 1px solid gray;
+     display: block;
+     height: 64px;
+     margin: 4px;
+     width: 64px;
+}
+
+.adr-content-item-description {
+     font-size: 1.05em;
+     line-height: 1.1em;
+     padding: 5px;
+}
+
+.adr-content-item-link {
+    
 }

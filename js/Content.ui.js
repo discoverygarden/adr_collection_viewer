@@ -136,19 +136,19 @@ ContentUi = Ext.extend(Ext.Panel, {
                             '                </th>',
                             '                <th>',
                             '                    <a href=\'{url}\' title="{title}">',
-                            '                        <h2 class="adr-content-item-title">{[fm.ellipsis(values.title, 61, false)]} </h2>',
+                            '                        <h2 class="adr-content-item-title">{[fm.ellipsis(values.title, 75, false)]} </h2>',
                             '                    </a>',
                             '                </th>',
                             '            </tr>',
                             '            <tr>',
-                            '                <td class="adr-content-item-description">{[fm.ellipsis(values.description, 350, true)]} <a href=\'{url}#adr-collection-title\' class="adr-content-item-link"> [Click for more]</a></td>',
+                            '                <td class="adr-content-item-description">{[fm.ellipsis(values.description, 255, true)]} </td>',
                             '            </tr>',
                             '        </table>',
                             '    </div>',
                             '</tpl>'
                         ],
                         loadingText: 'Loading Please Wait...',
-                        emptyText: '<div>There are no sub-collections or objects within this collection.</div>'
+                        emptyText: '<div>This collection currently has no items to display.</div>'
                     }
                 ],
                 fbar: {

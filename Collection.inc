@@ -342,7 +342,7 @@ class Collection {
       $parent_model = $result['parent_model'];
       unset($result['parent_model']); // Don't need to return this info to javascript...
       $item = new Fedora_Item($pid);
-      $description = "Default Description, Check this object's metadata and ensure a description is present.";
+      $description = "&nbsp;";
       if ($info = $this->getTitleAndDescriptionFromMods($item)) {
         list($mods_title, $mods_description) = $info;
         //$title = $mods_title != '' ? $mods_title : $title;

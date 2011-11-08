@@ -530,8 +530,28 @@
                             "jsClass": "MyButton9",
                             "snapToGrid": 10,
                             "userConfig": {
-                                "text": "Add to this Collection",
+                                "text": "Add Object",
                                 "id": "adr-content-add"
+                            }
+                        },
+                        {
+                            "id": "MySeparator2",
+                            "cid": "tbseparator",
+                            "jsClass": "MySeparator2",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "width": 10,
+                                "height": 22
+                            }
+                        },
+                        {
+                            "id": "MyButton10",
+                            "cid": "button",
+                            "jsClass": "MyButton10",
+                            "snapToGrid": 10,
+                            "userConfig": {
+                                "text": "Add Collection",
+                                "id": "adr-subcollection-add"
                             }
                         }
                     ]

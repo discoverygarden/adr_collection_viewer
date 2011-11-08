@@ -98,17 +98,36 @@ class Collection {
    * @return array
    */
   private function getAllMembers() {
+    global $user;
     $query = 'select $object $title $model $parent_model $created from <#ri>
-                             where ($object <info:fedora/fedora-system:def/model#label> $title
-                             and $object <fedora-model:hasModel> $model
-                             and $object <fedora-model:createdDate> $created
-                             and $model <fedora-model:hasModel> $parent_model
-                             and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>
-                             and ($object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
-                             or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '>))
-                             minus $model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>  
-                             minus $parent_model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
-                             order by $title';
+              where
+              ((
+              $object <fedora-model:label> $title
+              and $object <fedora-model:hasModel> $model
+              and $object <fedora-model:createdDate> $created
+              and $model <fedora-model:hasModel> $parent_model
+              and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>
+              and ( $object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
+              or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '> )
+              minus $object <http://islandora.ca/ontology/relsext#isViewableByRole> $role
+              minus $object <http://islandora.ca/ontology/relsext#isViewableByUser> $user
+              ) or (
+              $object <fedora-model:label> $title
+              and $object <fedora-model:hasModel> $model
+              and $object <fedora-model:createdDate> $created
+              and $model <fedora-model:hasModel> $parent_model
+              and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>
+              and ( $object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
+              or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '> )
+              and (';
+    foreach ($user->roles as $role) {
+      $query .= '$object <http://islandora.ca/ontology/relsext#isViewableByRole> '."'$role' or ";
+    }
+    $query .= '$object <http://islandora.ca/ontology/relsext#isViewableByUser> '."'$user->name'".')';
+    $query .= '))
+              minus $model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
+              minus $parent_model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
+              order by $title';
     return $this->query($query);
   }
 
@@ -117,18 +136,38 @@ class Collection {
    * @return array
    */
   private function getMemberObjects() {
+    global $user;
     $query = 'select $object $title $model $parent_model $created from <#ri>
-                             where ($object <info:fedora/fedora-system:def/model#label> $title
-                             and $object <fedora-model:createdDate> $created
-                             and $object <fedora-model:hasModel> $model
-                             and $model <fedora-model:hasModel> $parent_model
-                             and $parent_model <mulgara:is> <info:fedora/fedora-system:ContentModel-3.0>
-                             and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>
-                             and ($object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
-                             or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '>))
-                             minus $model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>  
-                             minus $parent_model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
-                             order by $title';
+              where
+              ((
+              $object <fedora-model:label> $title
+              and $object <fedora-model:hasModel> $model
+              and $object <fedora-model:createdDate> $created
+              and $model <fedora-model:hasModel> $parent_model
+              and $parent_model <mulgara:is> <info:fedora/fedora-system:ContentModel-3.0>
+              and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>
+              and ( $object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
+              or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '> )
+              minus $object <http://islandora.ca/ontology/relsext#isViewableByRole> $role
+              minus $object <http://islandora.ca/ontology/relsext#isViewableByUser> $user
+              ) or (
+              $object <fedora-model:label> $title
+              and $object <fedora-model:hasModel> $model
+              and $object <fedora-model:createdDate> $created
+              and $model <fedora-model:hasModel> $parent_model
+              and $parent_model <mulgara:is> <info:fedora/fedora-system:ContentModel-3.0>
+              and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>
+              and ( $object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
+              or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '> )
+              and (';
+    foreach ($user->roles as $role) {
+      $query .= '$object <http://islandora.ca/ontology/relsext#isViewableByRole> '."'$role' or ";
+    }
+    $query .= '$object <http://islandora.ca/ontology/relsext#isViewableByUser> '."'$user->name'".')';
+    $query .= '))
+              minus $model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
+              minus $parent_model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
+              order by $title';
     return $this->query($query);
   }
 
@@ -137,18 +176,38 @@ class Collection {
    * @return array
    */
   private function getMemberCollections() {
+    global $user;
     $query = 'select $object $title $model $parent_model $created from <#ri>
-                             where ($object <info:fedora/fedora-system:def/model#label> $title
-                             and $object <fedora-model:createdDate> $created
-                             and $object <fedora-model:hasModel> $model
-                             and $model <fedora-model:hasModel> $parent_model
-                             and $parent_model <mulgara:is> <info:fedora/islandora:collectionCModel>
-                             and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>
-                             and ($object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
-                             or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '>))
-                             minus $model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>  
-                             minus $parent_model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
-                             order by $title';
+              where
+              ((
+              $object <fedora-model:label> $title
+              and $object <fedora-model:hasModel> $model
+              and $object <fedora-model:createdDate> $created
+              and $model <fedora-model:hasModel> $parent_model
+               and $parent_model <mulgara:is> <info:fedora/islandora:collectionCModel>
+              and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>
+              and ( $object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
+              or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '> )
+              minus $object <http://islandora.ca/ontology/relsext#isViewableByRole> $role
+              minus $object <http://islandora.ca/ontology/relsext#isViewableByUser> $user
+              ) or (
+              $object <fedora-model:label> $title
+              and $object <fedora-model:hasModel> $model
+              and $object <fedora-model:createdDate> $created
+              and $model <fedora-model:hasModel> $parent_model
+              and $parent_model <mulgara:is> <info:fedora/islandora:collectionCModel>
+              and $object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>
+              and ( $object <fedora-rels-ext:isMemberOfCollection> <info:fedora/' . $this->pid . '>
+              or $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $this->pid . '> )
+              and (';
+    foreach ($user->roles as $role) {
+      $query .= '$object <http://islandora.ca/ontology/relsext#isViewableByRole> '."'$role' or ";
+    }
+    $query .= '$object <http://islandora.ca/ontology/relsext#isViewableByUser> '."'$user->name'".')';
+    $query .= '))
+              minus $model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
+              minus $parent_model <mulgara:is> <info:fedora/fedora-system:FedoraObject-3.0>
+              order by $title';
     return $this->query($query);
   }
 

@@ -91,12 +91,13 @@ class AjaxHandler {
     }
     $created = $this->getObjectCreationDate();
     $modified = $this->getObjectLastModifiedDate();
-    $user = $this->getLastUserToModifyObject();
+    //$user = $this->getLastUserToModifyObject();
     // @TODO use classes instead of inlined values.
     $footer = "<tr><td colspan='2'><br/></td></tr>";
     $footer .= "<tr><td colspan='2' style='text-align: center;font-size:0.9em;'>";
     $footer .= "This object was added {$created}. ";
-    $footer .= "This object was last updated {$modified} by {$user}.</td></tr>";
+    //$footer .= "This object was last updated {$modified} by {$user}.</td></tr>";
+    $footer .= "This object was last updated {$modified}.</td></tr>";
     return "<table width='100%'>{$content}{$footer}</table>";
   }
 
@@ -145,8 +146,8 @@ class AjaxHandler {
       'label' => $this->getObjectLabel(),
       'created' => $this->getObjectCreationDate(),
       'modified' => $this->getObjectLastModifiedDate(),
-      'owner' => $this->getObjectOwner(),
-      'state' => $this->getObjectState()
+      //'owner' => $this->getObjectOwner(),
+      //'state' => $this->getObjectState()
     );
     return array($object_properties);
   }

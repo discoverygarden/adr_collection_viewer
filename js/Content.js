@@ -20,6 +20,7 @@ Content = Ext.extend(ContentUi, {
         var sort = toolbar.get('adr-content-sort');
         var search_text = toolbar.get('adr-content-search-text');
         var add = toolbar.get('adr-content-add');
+        var subcollection = toolbar.get('adr-subcollection-add');
         content_panel.addListener('afterrender', function() {
             this.getFooterToolbar().doRefresh();
         });
@@ -59,6 +60,15 @@ Content = Ext.extend(ContentUi, {
         add.addListener('click', function() {
             var location = window.location;
             var page = location.protocol + '//' + location.host + '/formbuilder/ingest/';
+            if(typeof(ADRCollection.pid) != 'undefined' && ADRCollection.pid != 'undefined') {
+                page = page + ADRCollection.pid;
+            }
+            window.location = page;
+        });
+
+        subcollection.addListener('click', function() {
+            var location = window.location;
+            var page = location.protocol + '//' + location.host + '/islandora_co_manager/create_collection/';
             if(typeof(ADRCollection.pid) != 'undefined' && ADRCollection.pid != 'undefined') {
                 page = page + ADRCollection.pid;
             }

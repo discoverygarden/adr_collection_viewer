@@ -127,9 +127,31 @@ class ADRCollection {
    * @return boolean
    */
   private function canShowManagePanel() {
-    return user_access('purge objects and datastreams')
-    && user_access('add fedora datastreams')
-    && user_access('edit fedora meta data');
+    module_load_include('inc','islandora_xacml_editor','Xacml');
+    module_load_include('inc','islandora_xacml_editor','XacmlException');
+    global $user;
+
+    try {
+      $xacml = Xacml::constructFromPid($this->pid);
+      if($xacml->managementRule->isPopulated()) {
+        $show = $xacml->managementRule->hasPermission($user->name, $user->roles);
+      }
+      elseif ($user->uid == 0) {
+        $show = TRUE;
+      }
+      else {
+        $show = in_array('administrator',$user->roles);
+      }
+    } 
+    catch (XacmlException $e) {
+      $show = FALSE;
+    }
+
+    $show &= user_access('purge objects and datastreams')
+    || user_access('add fedora datastreams')
+    || user_access('edit fedora meta data');
+
+    return $show;
   }
 
   /**

@@ -58,6 +58,8 @@ class AjaxHandler {
     module_load_include('inc', 'fedora_repository', 'api/fedora_item');
     $this->pid = $pid;
     $this->item = new Fedora_Item($pid);
+    $dsinfo = $this->item->find_objects_by_pattern($this->item->pid, 'pid', 1, array('ownerId','state'));
+    $this->extraInfo = $dsinfo[$this->item->pid];
   }
 
   /**
@@ -236,12 +238,7 @@ class AjaxHandler {
    * @return string
    */
   private function getObjectOwner() {
-    $xpath = $this->getFoxmlXPath();
-    $result = $xpath->query("/foxml:digitalObject/foxml:objectProperties/foxml:property[@NAME='info:fedora/fedora-system:def/model#ownerId']/@VALUE");
-    if ($result && $result->length == 1) {
-      return $result->item(0)->value;
-    }
-    return '';
+    return $this->extraInfo['ownerId'];
   }
 
   /**
@@ -250,76 +247,7 @@ class AjaxHandler {
    * @return string
    */
   private function getObjectState() {
-    $xpath = $this->getFoxmlXPath();
-    $result = $xpath->query("/foxml:digitalObject/foxml:objectProperties/foxml:property[@NAME='info:fedora/fedora-system:def/model#state']/@VALUE");
-    if ($result && $result->length == 1) {
-      return $result->item(0)->value;
-    }
-    return '';
-  }
-
-  /**
-   *
-   */
-  private function getLastUserToModifyObject() {
-    $xpath = $this->getFoxmlXPath();
-    $result = $xpath->query("(//*[local-name()='responsibility'])[last()]");
-    $audit = $result->item(0)->nodeValue;
-    return sprintf("%s", $audit);
-  }
-
-  /**
-   * Gets this objects FOXML repersentation, as a DOMDocument.
-   *
-   * Creates a new DOMDocument object from this objects exported FOXML, storing it
-   * as a member if it doesn't already exist.
-   *
-   * @return DOMDocument
-   */
-  private function getFoxmlDocument() {
-    if (empty($this->foxml)) {
-      $foxml = $this->item->export_as_foxml();
-      $this->foxml = new DOMDocument();
-      $this->foxml->loadXML($foxml);
-      return $this->foxml;
-    }
-    else {
-      return $this->foxml;
-    }
-  }
-
-  /**
-   * Get the XPath for this object FOXML repersentation.
-   *
-   * Creates a new DOMXPath object, storing it as a member if it doesn't already exist.
-   *
-   * @return DOMXPath
-   *   XPath for this object FOXML repersentation.
-   */
-  private function getFoxmlXPath() {
-    if (empty($this->xpath)) {
-      $foxml = $this->getFoxmlDocument();
-      $this->xpath = new DOMXPath($foxml);
-      $this->registerFoxmlNamespaces($foxml->saveXML());
-      return $this->xpath;
-    }
-    else {
-      return $this->xpath;
-    }
-  }
-
-  /**
-   * Registers all namespaces found in the foxml document.
-   *
-   * @param string $foxml
-   *   XML string of the exported fedora objects foxml.
-   */
-  private function registerFoxmlNamespaces($foxml) {
-    $simple = new SimpleXMLElement($foxml);
-    $names = $simple->getNamespaces(TRUE);
-    foreach ($names as $prefix => $uri) {
-      $this->xpath->registerNamespace($prefix, $uri);
-    }
+    return $this->extraInfo['state'];
   }
 
   /**

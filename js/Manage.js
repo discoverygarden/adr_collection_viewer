@@ -18,10 +18,14 @@ function gotoEditModsPage() {
   window.location = page;
 }
 
-function gotoXACMLPage(pid) {
+function gotoXACMLPage(pid, policy_url) {
+  policy_url = typeof(policy_url) != 'undefined' ? policy_url : 'POLICY';
+  pid = typeof(pid) != 'undefined' ? pid : 'undefined';
   pid = (pid) ? pid : window.location.pathname.split('/')[3];
+  
   var location = window.location;
-  var page = location.protocol + '//' + location.host + '/xacml/' + pid + '/POLICY';
+  var page = location.protocol + '//' + location.host + '/xacml/' + pid + '/' + policy_url;
+  
   window.location = page;
 }
 
@@ -57,6 +61,9 @@ Manage = Ext.extend(ManageUi, {
       }]
     });
 
+    edit.disable();
+    remove.disable();
+
     details.updateDetails = function(record) {
       this.tpl.overwrite(this.body, record.data);
     }
@@ -77,49 +84,56 @@ Manage = Ext.extend(ManageUi, {
         form.child('input').dom.click();
       }
     });
-    remove.addListener('click', function(button, event) {
-      var records = viewer.getSelectedRecords();
-      var record = records[0];
-      if(record) {
-        var store = viewer.getStore();
-        var pid = store.baseParams.pid;
-        var dsid = record.get('dsid');
-        Ext.Msg.confirm('Delete', 'Are you sure you want to delete this file?', function(btn, text){
-          if (btn == 'yes') {
-            Ext.Ajax.request({
-              url: '/adrcollection/ajax/removeDatastream',
-              success: function() {
-                var store = Ext.StoreMgr.lookup('Datastreams');
-                store.reload(store.lastOptions);
-              },
-              failure: function() {
-                Ext.Msg.alert('Failure', 'Could not delete file.');
-              },
-              params: {
-                pid: pid,
-                dsid: dsid
-              }
-            });
-
-          }
-        });
-      }
-
-    });
+    
+    if (UserCollectionPermissions.datastream_canDeleteStream) {
+      remove.addListener('click', function(button, event) {
+        var records = viewer.getSelectedRecords();
+        var record = records[0];
+        if(record) {
+          var store = viewer.getStore();
+          var pid = store.baseParams.pid;
+          var dsid = record.get('dsid');
+          Ext.Msg.confirm('Delete', 'Are you sure you want to delete this file?', function(btn, text){
+            if (btn == 'yes') {
+              Ext.Ajax.request({
+                url: '/adrcollection/ajax/removeDatastream',
+                success: function() {
+                  var store = Ext.StoreMgr.lookup('Datastreams');
+                  store.reload(store.lastOptions);
+                },
+                failure: function() {
+                  Ext.Msg.alert('Failure', 'Could not delete file.');
+                },
+                params: {
+                  pid: pid,
+                  dsid: dsid
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+    
+    
     viewer.addListener('click', function(dataviewer, index, node, event) {
       var record = dataviewer.getStore().getAt(index);
       if(record) {
         var dsid = record.get('dsid');
         details.updateDetails(record);
         if(dsid == 'MODS') {
-          edit.enable();
-          edit.addListener('click', gotoEditModsPage);
+          if (UserCollectionPermissions.datastream_canEditStream) {
+            edit.enable();
+            edit.addListener('click', gotoEditModsPage);
+          }
         }
         else {
           edit.disable();
           edit.removeListener('click', gotoEditModsPage);
         }
-        remove.enable();
+        if (UserCollectionPermissions.datastream_canDeleteStream) {
+          remove.enable();
+        }
         download.enable();
       }
       else {
@@ -132,45 +146,76 @@ Manage = Ext.extend(ManageUi, {
     var editObjectToolbar = this.get('adr-manage-object-properties').getFooterToolbar();
     var editObject = editObjectToolbar.get('adr-manage-edit-object');
     var editObjectPermissions = editObjectToolbar.get('adr-manage-edit-object-permissions');
+    var editChildPermissions = editObjectToolbar.get('adr-manage-edit-child-permissions');
     var deleteObject = editObjectToolbar.get('adr-manage-delete-object');
-    editObject.addListener('click', function(button, event) {
-      var window = new EditObjectWindow();
-      window.show(this);
-    });
-    editObjectPermissions.addListener('click', function(button, event) {
-      gotoXACMLPage(ADRCollection.pid);
-    //Ext.Msg.alert('Failure', 'This will redirect to the XCAML form, once its available.');
-    });
-    deleteObject.addListener('click', function(button, event) {
-      Ext.Msg.confirm('Delete', 'Are you sure you want to delete this Object?', function(btn, text){
-        if (btn == 'yes') {
-          var pid = ADRCollection.pid;
-          Ext.Ajax.request({
-            url: '/adrcollection/ajax/deleteObject',
-            success: function(response, opts) {
-              var obj = Ext.decode(response.responseText);
-              if(obj.success) {
-                // Redirect to top collection for now.
-                var location = window.location;
-                var page = location.protocol + '//' + location.host + '/fedora/repository/';
-                window.location = page;
-              }
-              else {
-                Ext.Msg.alert('Failure', obj.msg);
-              }
+    
+    // Permission to edit collections are assumed to be negative unless explicitly true.
+    editObject.disable();
+    if (UserCollectionPermissions.manage_canEditObjects) {
+      editObject.enable();
 
-            },
-            failure: function(response, opts) {
-              Ext.Msg.alert('Failure', 'Failed to Delete Object.');
-            },
-            params: {
-              pid: pid
-            }
-          });
-
-        }
+      editObject.addListener('click', function(button, event) {
+        var window = new EditObjectWindow();
+        window.show(this);
       });
-    });
+    }
+    
+    // Permission to edit permissions are assumed to be negative unless explicitly true.
+    editObjectPermissions.disable();
+    if (UserCollectionPermissions.manage_canEditPermissions) {
+      editObjectPermissions.enable();
+    
+      editObjectPermissions.addListener('click', function(button, event) {
+        gotoXACMLPage(ADRCollection.pid);
+      });
+    }
+
+    // Permission to edit child permissions are assumed to be negative unless explicitly true.
+    editChildPermissions.disable();
+    if (UserCollectionPermissions.manage_canEditChildPermissions) {
+      editChildPermissions.enable();
+    
+      editChildPermissions.addListener('click', function(button, event) {
+        gotoXACMLPage(ADRCollection.pid, 'CHILD_SECURITY');
+      });
+    }
+
+    // Permission to delete collections are assumed to be negative unless explicitly true.
+    deleteObject.disable();
+    if (UserCollectionPermissions.manage_canDeleteObject) {
+      deleteObject.enable();
+      
+      deleteObject.addListener('click', function(button, event) {
+        Ext.Msg.confirm('Delete', 'Are you sure you want to delete this Object?', function(btn, text){
+          if (btn == 'yes') {
+            var pid = ADRCollection.pid;
+            Ext.Ajax.request({
+              url: '/adrcollection/ajax/deleteObject',
+              success: function(response, opts) {
+                var obj = Ext.decode(response.responseText);
+                if(obj.success) {
+                  // Redirect to top collection for now.
+                  var location = window.location;
+                  var page = location.protocol + '//' + location.host + '/fedora/repository/';
+                  window.location = page;
+                }
+                else {
+                  Ext.Msg.alert('Failure', obj.msg);
+                }
+
+              },
+              failure: function(response, opts) {
+                Ext.Msg.alert('Failure', 'Failed to Delete Object.');
+              },
+              params: {
+                pid: pid
+              }
+            });
+
+          }
+        });
+      });
+    }
   }
 });
 Ext.reg('manage', Manage);

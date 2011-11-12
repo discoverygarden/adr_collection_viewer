@@ -148,8 +148,8 @@ class AjaxHandler {
       'label' => $this->getObjectLabel(),
       'created' => $this->getObjectCreationDate(),
       'modified' => $this->getObjectLastModifiedDate(),
-      //'owner' => $this->getObjectOwner(),
-      //'state' => $this->getObjectState()
+      'owner' => $this->getObjectOwner(),
+      'state' => $this->getObjectState()
     );
     return array($object_properties);
   }

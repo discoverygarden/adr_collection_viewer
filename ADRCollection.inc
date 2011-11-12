@@ -156,7 +156,7 @@ class ADRCollection {
       if($xacml->managementRule->isPopulated()) {
         $show = $xacml->managementRule->hasPermission($user->name, $user->roles);
       }
-      elseif ($user->uid == 0) {
+      elseif ($user->uid == 1) {
         $show = TRUE;
       }
       else {

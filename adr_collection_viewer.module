@@ -86,6 +86,7 @@ function adr_collection_viewer_get_pid() {
   if($pid == 'undefined') {
     return variable_get('fedora_repository_pid', 'islandora:top');
   }
+  $pid = rawurldecode($pid);
   return $pid;
 }
 

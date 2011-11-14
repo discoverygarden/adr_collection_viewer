@@ -88,7 +88,8 @@ class ADRCollection {
     $xacml = Xacml::constructFromPid($this->pid);
     try {
       $canManageInXacml = $xacml->managementRule->hasPermission($user->name, $user->roles);
-    except(ExacmlException $e) {
+    }
+    catch (ExacmlException $e) {
       $canManageInXacml = FALSE;
     }
 

@@ -129,6 +129,16 @@
                                     }
                                 },
                                 {
+                                    "id": "MyButton11",
+                                    "cid": "button",
+                                    "jsClass": "MyButton1",
+                                    "snapToGrid": 10,
+                                    "userConfig": {
+                                        "text": "Edit Child Permissions",
+                                        "id": "adr-manage-edit-child-permissions"
+                                    }
+                                },
+                                {
                                     "id": "MyButton",
                                     "cid": "button",
                                     "jsClass": "MyButton",

@@ -82,6 +82,26 @@ class ADRCollection {
       'Content.js',
     );
 
+    $canAddNewObject = user_access("Add Object");
+    $canAddNewCollection = user_access("Edit Subcollection");
+    $canEditObjects = user_access("Edit Object");
+    $canEditPermissions = user_access("Edit Permissions");
+    $canEditChildPermissions = user_access("Edit Child Permissions");
+    $canDeleteObject = user_access("Delete Object");
+    $canEditStream = user_access("Edit DS");
+    $canDeleteStream = user_access("Delete DS");
+    
+    $permissions_block =
+        "UserCollectionPermissions.content_canAddNewObject=" . ($canAddNewObject ? "true" : "false") . ";" .
+        "UserCollectionPermissions.content_canAddNewCollection=" . ($canAddNewCollection ? "true" : "false") . ";" .
+        "UserCollectionPermissions.manage_canEditObjects=" . ($canEditObjects ? "true" : "false") . ";" .
+        "UserCollectionPermissions.manage_canEditPermissions=" . ($canEditPermissions ? "true" : "false") . ";" .
+        "UserCollectionPermissions.manage_canEditChildPermissions=" . ($canEditChildPermissions ? "true" : "false") . ";" .
+        "UserCollectionPermissions.manage_canDeleteObject=" . ($canDeleteObject ? "true" : "false") . ";" .
+        "UserCollectionPermissions.datastream_canEditStream=" . ($canEditStream ? "true" : "false") . ";" .
+        "UserCollectionPermissions.datastream_canDeleteStream=" . ($canDeleteStream ? "true" : "false") . ";";
+    drupal_add_js($permissions_block, 'inline');
+    
     drupal_add_js("$path/js/IncludeFirst.js");
     $title = $this->getCollectionTitle();
     $description = $this->getCollectionDescription();

@@ -57,23 +57,33 @@ Content = Ext.extend(ContentUi, {
             pager.store.reload(lastOptions);
         };
 
-        add.addListener('click', function() {
-            var location = window.location;
-            var page = location.protocol + '//' + location.host + '/formbuilder/ingest/';
-            if(typeof(ADRCollection.pid) != 'undefined' && ADRCollection.pid != 'undefined') {
-                page = page + ADRCollection.pid;
-            }
-            window.location = page;
-        });
+        add.disable();
+        if (UserCollectionPermissions.content_canAddNewObject) {
+            add.enable();
+            
+            add.addListener('click', function() {
+                var location = window.location;
+                var page = location.protocol + '//' + location.host + '/formbuilder/ingest/';
+                if(typeof(ADRCollection.pid) != 'undefined' && ADRCollection.pid != 'undefined') {
+                    page = page + ADRCollection.pid;
+                }
+                window.location = page;
+            });
+        }
 
-        subcollection.addListener('click', function() {
-            var location = window.location;
-            var page = location.protocol + '//' + location.host + '/islandora_co_manager/create_collection/';
-            if(typeof(ADRCollection.pid) != 'undefined' && ADRCollection.pid != 'undefined') {
-                page = page + ADRCollection.pid;
-            }
-            window.location = page;
-        });
+        subcollection.disable();
+        if (UserCollectionPermissions.content_canAddNewCollection) {
+        	subcollection.enable();
+            
+            subcollection.addListener('click', function() {
+                var location = window.location;
+                var page = location.protocol + '//' + location.host + '/islandora_co_manager/create_collection/';
+                if(typeof(ADRCollection.pid) != 'undefined' && ADRCollection.pid != 'undefined') {
+                    page = page + ADRCollection.pid;
+                }
+                window.location = page;
+            });
+        }
     }
 });
 Ext.reg('Content', Content);

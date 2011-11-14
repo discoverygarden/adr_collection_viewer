@@ -84,8 +84,13 @@ class ADRCollection {
 
     global $user; 
     module_load_include('inc', 'islandora_xacml_editor', 'Xacml');
+    module_load_include('inc', 'islandora_xacml_editor', 'XacmlException');
     $xacml = Xacml::constructFromPid($this->pid);
-    $canManageInXacml = $xacml->managementRule->hasPermission($user->name, $user->roles);
+    try {
+      $canManageInXacml = $xacml->managementRule->hasPermission($user->name, $user->roles);
+    except(ExacmlException $e) {
+      $canManageInXacml = FALSE;
+    }
 
     $canAddNewObject = user_access("Add Object") && $canManageInXacml;
     $canAddNewCollection = user_access("Edit Subcollection") && $canManageInXacml;

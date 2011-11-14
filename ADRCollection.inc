@@ -82,8 +82,13 @@ class ADRCollection {
       'Content.js',
     );
 
-    $canAddNewObject = user_access("Add Object");
-    $canAddNewCollection = user_access("Edit Subcollection");
+    global $user; 
+    module_load_include('inc', 'islandora_xacml_editor', 'Xacml');
+    $xacml = Xacml::constructFromPid($this->pid);
+    $canManageInXacml = $xacml->managementRule->hasPermission($user->name, $user->roles);
+
+    $canAddNewObject = user_access("Add Object") && $canManageInXacml;
+    $canAddNewCollection = user_access("Edit Subcollection") && $canManageInXacml;
     $canEditObjects = user_access("Edit Object");
     $canEditPermissions = user_access("Edit Permissions");
     $canEditChildPermissions = user_access("Edit Child Permissions");

@@ -93,15 +93,15 @@ class ADRCollection {
       $canManageInXacml = FALSE;
     }
 
-    $canAddNewObject = user_access("Add Object") && $canManageInXacml;
-    $canAddNewCollection = user_access("Edit Subcollection") && $canManageInXacml;
-    $canEditObjects = user_access("Edit Object");
-    $canEditPermissions = user_access("Edit Permissions");
-    $canEditChildPermissions = user_access("Edit Child Permissions");
-    $canDeleteObject = user_access("Delete Object");
-    $canEditStream = user_access("Edit DS");
-    $canDeleteStream = user_access("Delete DS");
-    
+    $canAddNewObject = user_access("ingest new fedora objects") && $canManageInXacml;
+    $canAddNewCollection = user_access("ingest new fedora objects") && $canManageInXacml;
+    $canEditObjects = user_access("edit fedora meta data");
+    $canEditPermissions = user_access("Edit XACML Policies");
+    $canEditChildPermissions = user_access("Edit XACML Policies");
+    $canDeleteObject = user_access("purge objects and datastreams");
+    $canDeleteStream = user_access("purge objects and datastreams");
+    $canEditStream = user_access("edit fedora meta data");
+
     $permissions_block =
         "UserCollectionPermissions.content_canAddNewObject=" . ($canAddNewObject ? "true" : "false") . ";" .
         "UserCollectionPermissions.content_canAddNewCollection=" . ($canAddNewCollection ? "true" : "false") . ";" .

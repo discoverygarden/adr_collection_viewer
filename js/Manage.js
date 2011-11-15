@@ -12,7 +12,12 @@
  */
 
 function gotoEditModsPage() {
-  var pid = window.location.pathname.split('/')[3];
+  // try to pull the PID from the ULR location bar but in the case of the root repository
+  // this will be empty.  If it is empty then pass it as empty and not "undefined", which
+  // is what will be passed if a non-existant string is used ... this is what will happen
+  // with pid = window.location.pathname.split('/')[3] if there are not 4 elements.
+  var pathnameArray = window.location.pathname.split('/');
+  var pid = (pathnameArray.length >=4 ) ? pathnameArray[3] : "";
   var location = window.location;
   var page = location.protocol + '//' + location.host + '/formbuilder/edit/' + pid;
   window.location = page;

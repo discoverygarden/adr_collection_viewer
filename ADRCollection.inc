@@ -98,6 +98,7 @@ class ADRCollection {
     $canEditObjects = user_access("edit fedora meta data");
     $canEditPermissions = user_access("Edit XACML Policies");
     $canEditChildPermissions = user_access("Edit XACML Policies");
+    $canAddStream = user_access("add fedora datastreams");
     $canDeleteObject = user_access("purge objects and datastreams");
     $canDeleteStream = user_access("purge objects and datastreams");
     $canEditStream = user_access("edit fedora meta data");
@@ -109,6 +110,7 @@ class ADRCollection {
         "UserCollectionPermissions.manage_canEditPermissions=" . ($canEditPermissions ? "true" : "false") . ";" .
         "UserCollectionPermissions.manage_canEditChildPermissions=" . ($canEditChildPermissions ? "true" : "false") . ";" .
         "UserCollectionPermissions.manage_canDeleteObject=" . ($canDeleteObject ? "true" : "false") . ";" .
+        "UserCollectionPermissions.datastream_canAddStream=" . ($canAddStream ? "true" : "false") . ";" .
         "UserCollectionPermissions.datastream_canEditStream=" . ($canEditStream ? "true" : "false") . ";" .
         "UserCollectionPermissions.datastream_canDeleteStream=" . ($canDeleteStream ? "true" : "false") . ";";
     drupal_add_js($permissions_block, 'inline');

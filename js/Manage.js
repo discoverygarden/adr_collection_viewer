@@ -73,6 +73,7 @@ Manage = Ext.extend(ManageUi, {
       }]
     });
 
+    add.disable();
     edit.disable();
     remove.disable();
 
@@ -80,9 +81,12 @@ Manage = Ext.extend(ManageUi, {
       this.tpl.overwrite(this.body, record.data);
     }
 
-    add.addListener('click', function(button, event) {
-      gotoFilesIngestPage(ADRCollection.pid);
-    });
+    if (UserCollectionPermissions.datastream_canAddStream) {
+      add.enable();
+      add.addListener('click', function(button, event) {
+        gotoFilesIngestPage(ADRCollection.pid);
+      });
+    }
     
     download.addListener('click', function(button, event) {
       var records = viewer.getSelectedRecords();

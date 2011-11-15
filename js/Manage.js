@@ -29,6 +29,18 @@ function gotoXACMLPage(pid, policy_url) {
   window.location = page;
 }
 
+function gotoFilesIngestPage(pid) {
+  // test the pid to see if it is uninitialized or an empty string.  If this the case then
+  // attempt to use the path name in the address bar.  If this is the root collection and
+  // there is no PID appended to the URL in the location bar then the value of the variable
+  // 'pid' will be set to the string "undefined" which will be sent to the form.
+  pid = (!!pid) ? pid : window.location.pathname.split('/')[3];
+
+  var location = window.location;
+  var page = location.protocol + '//' + location.host + '/islandora_co_manager/ingest_files/' + pid;
+  window.location = page;
+}
+
 Manage = Ext.extend(ManageUi, {
   initComponent: function() {
     Manage.superclass.initComponent.call(this);
@@ -69,9 +81,9 @@ Manage = Ext.extend(ManageUi, {
     }
 
     add.addListener('click', function(button, event) {
-      var window = new AddDatastream();
-      window.show(this);
+      gotoFilesIngestPage(ADRCollection.pid);
     });
+    
     download.addListener('click', function(button, event) {
       var records = viewer.getSelectedRecords();
       var record = records[0];

@@ -525,7 +525,8 @@
                             "snapToGrid": 10,
                             "userConfig": {
                                 "id": "adr-content-search-text",
-                                "width": 300
+                                "width": 300,
+                                "triggerClass": "x-form-search-trigger"
                             }
                         },
                         {

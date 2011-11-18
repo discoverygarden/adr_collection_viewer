@@ -590,9 +590,9 @@
                             "userConfig": {
                                 "itemSelector": "div",
                                 "store": "CollectionMembers",
-                                "tpl": "<tpl for=\".\">\n    <div class=\"adr-content-item\">\n        <table>\n            <tr>\n                <th class=\"adr-content-item-icon-block\" rowspan=\"2\">\n                    <a href='{url}'>\n                        <img src=\"{img_url}\" class=\"adr-content-item-icon\"></img>\n                    </a>\n                </th>\n                <th>\n                    <a href='{url}' title=\"{title}\">\n                        <h2 class=\"adr-content-item-title\">{[fm.ellipsis(values.title, 61, false)]} </h2>\n                    </a>\n                </th>\n            </tr>\n            <tr>\n                <td class=\"adr-content-item-description\">{[fm.ellipsis(values.description, 350, true)]} <a href='{url}#adr-collection-title' class=\"adr-content-item-link\"> [Click for more]</a></td>\n            </tr>\n        </table>\n    </div>\n</tpl>",
+                                "tpl": "<tpl for=\".\">\n    <div class=\"adr-content-item\">\n        <table>\n            <tr>\n                <th class=\"adr-content-item-icon-block\" rowspan=\"2\">\n                    <a href='{url}'>\n                        <img src=\"{img_url}\" class=\"adr-content-item-icon\"></img>\n                    </a>\n                </th>\n                <th>\n                    <a href='{url}' title=\"{title}\">\n                        <h2 class=\"adr-content-item-title\">{[fm.ellipsis(values.title, 75, false)]} </h2>\n                    </a>\n                </th>\n            </tr>\n            <tr>\n                <td class=\"adr-content-item-description\">{[fm.ellipsis(values.description, 255, true)]} </td>\n            </tr>\n        </table>\n    </div>\n</tpl>",
                                 "loadingText": "Loading Please Wait...",
-                                "emptyText": "<div>There are no sub-collections or objects within this collection.</div>",
+                                "emptyText": "<div>This collection currently has no items to display.</div>",
                                 "deferEmptyText": "-ext-undefined-"
                             }
                         },

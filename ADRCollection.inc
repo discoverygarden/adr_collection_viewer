@@ -164,20 +164,22 @@ class ADRCollection {
     module_load_include('inc','islandora_xacml_editor','XacmlException');
     global $user;
 
-    try {
-      $xacml = Xacml::constructFromPid($this->pid);
-      if($xacml->managementRule->isPopulated()) {
-        $show = $xacml->managementRule->hasPermission($user->name, $user->roles);
+    if ($user->uid == 1 || in_array('administrator', $user->roles)) {
+      $show = TRUE;
+    }
+    else {
+      try {
+        $xacml = Xacml::constructFromPid($this->pid);
+        if($xacml->managementRule->isPopulated()) {
+          $show = $xacml->managementRule->hasPermission($user->name, $user->roles);
+        }
+        else {
+          $show = FALSE;
+        }
       }
-      elseif ($user->uid == 1) {
-        $show = TRUE;
+      catch (XacmlException $e) {
+        $show = FALSE;
       }
-      else {
-        $show = in_array('administrator',$user->roles);
-      }
-    } 
-    catch (XacmlException $e) {
-      $show = FALSE;
     }
 
     $show &= user_access('purge objects and datastreams')

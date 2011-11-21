@@ -61,10 +61,10 @@ td.adr-collection-description {
      padding: 10px;
 }
 
-.adr-content-item-icon-block {
-     height: 63px;
-     width: 63px;
+.adr-content-item-icon-div {
      border: 1px solid gray;
+     height: 68px;
+     width: 68px;
 }
 
 .adr-content-item-icon {

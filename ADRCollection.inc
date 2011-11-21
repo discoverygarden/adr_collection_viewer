@@ -131,6 +131,7 @@ class ADRCollection {
       $this->includeManagePanel();
     }
     drupal_add_js("$path/js/ADRCollection.js");
+    drupal_add_js("$path/js/resize.js");
   }
 
   /**

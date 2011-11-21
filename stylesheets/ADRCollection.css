@@ -58,27 +58,24 @@ td.adr-collection-description {
 .adr-content-item-title {
      font-size: 1.5em;
      margin-bottom: -5px;
+     padding: 10px;
 }
 
 .adr-content-item-icon-block {
-     height: 64px;
-     width: 64px;
+     height: 63px;
+     width: 63px;
+     border: 1px solid gray;
 }
 
 .adr-content-item-icon {
-     border: 1px solid gray;
      display: block;
-     height: 64px;
      margin: 4px;
-     width: 64px;
+     margin-left: auto;
+     margin-right: auto;
 }
 
 .adr-content-item-description {
      font-size: 1.05em;
      line-height: 1.1em;
      padding: 5px;
-}
-
-.adr-content-item-link {
-    
 }

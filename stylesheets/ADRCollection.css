@@ -55,26 +55,16 @@ td.adr-collection-description {
      padding: 4px 0px;
 }
 
-.adr-content-item tr {
-         height: 50%;
-}
-
 .adr-content-item-title {
      font-size: 1.5em;
      margin-bottom: -5px;
      padding: 0px 0px 0px 10px;
-     text-align: center;
 }
 
 .adr-content-item-icon-block {
      height: 63px;
      width: 63px;
-}
-
-.adr-content-item-icon-div {
      border: 1px solid gray;
-     height: 68px;
-     width: 68px;
 }
 
 .adr-content-item-icon {
@@ -87,6 +77,5 @@ td.adr-collection-description {
 .adr-content-item-description {
      font-size: 1.05em;
      line-height: 1.1em;
-     padding: 5px 5px 5px 10px;
-     vertical-align: middle;
+     padding: 5px 0px 0px 10px;
 }

@@ -85,11 +85,11 @@ class ADRCollection {
     global $user; 
     module_load_include('inc', 'islandora_xacml_editor', 'Xacml');
     module_load_include('inc', 'islandora_xacml_editor', 'XacmlException');
-    $xacml = Xacml::constructFromPid($this->pid);
     try {
+      $xacml = Xacml::constructFromPid($this->pid);
       $canManageInXacml = $xacml->managementRule->hasPermission($user->name, $user->roles);
     }
-    catch (ExacmlException $e) {
+    catch (XacmlException $e) {
       $canManageInXacml = FALSE;
     }
 

@@ -55,10 +55,15 @@ td.adr-collection-description {
      padding: 4px 0px;
 }
 
+.adr-content-item tr {
+         height: 50%;
+}
+
 .adr-content-item-title {
      font-size: 1.5em;
      margin-bottom: -5px;
-     padding: 10px;
+     padding: 0px 0px 0px 10px;
+     text-align: center;
 }
 
 .adr-content-item-icon-block {
@@ -82,5 +87,6 @@ td.adr-collection-description {
 .adr-content-item-description {
      font-size: 1.05em;
      line-height: 1.1em;
-     padding: 5px;
+     padding: 5px 5px 5px 10px;
+     vertical-align: middle;
 }

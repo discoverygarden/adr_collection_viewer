@@ -84,7 +84,7 @@ Manage = Ext.extend(ManageUi, {
 
     details.updateDetails = function(record) {
       this.tpl.overwrite(this.body, record.data);
-    }
+    };
 
     if (UserCollectionPermissions.datastream_canAddStream) {
       add.enable();

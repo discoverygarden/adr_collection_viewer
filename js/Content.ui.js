@@ -129,6 +129,8 @@ ContentUi = Ext.extend(Ext.Panel, {
                 xtype: 'panel',
                 frame: true,
                 unstyled: true,
+                autoWidth: true,
+                height: 900,
                 id: 'adr-content-panel',
                 items: [
                     {

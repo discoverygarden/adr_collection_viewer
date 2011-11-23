@@ -2,6 +2,7 @@
 name = ADR Collection Viewer
 dependencies[] = ext
 dependencies[] = jquery_update
+dependencies[] = islandora_xacml_api
 description = Displays an EXTJS based viewer that allows users to modify/view ADR style fedora objects.
 package = Fedora Repository
 version = 6.1dev

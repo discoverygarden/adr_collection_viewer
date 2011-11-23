@@ -83,8 +83,8 @@ class ADRCollection {
     );
 
     global $user; 
-    module_load_include('inc', 'islandora_xacml_editor', 'Xacml');
-    module_load_include('inc', 'islandora_xacml_editor', 'XacmlException');
+    module_load_include('inc', 'islandora_xacml_api', 'Xacml');
+    module_load_include('inc', 'islandora_xacml_api', 'XacmlException');
     try {
       $xacml = Xacml::constructFromPid($this->pid);
       $canManageInXacml = $xacml->managementRule->hasPermission($user->name, $user->roles);
@@ -161,8 +161,8 @@ class ADRCollection {
    * @return boolean
    */
   private function canShowManagePanel() {
-    module_load_include('inc','islandora_xacml_editor','Xacml');
-    module_load_include('inc','islandora_xacml_editor','XacmlException');
+    module_load_include('inc','islandora_xacml_api','Xacml');
+    module_load_include('inc','islandora_xacml_api','XacmlException');
     global $user;
 
     if ($user->uid == 1 || in_array('administrator', $user->roles)) {

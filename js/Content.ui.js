@@ -96,11 +96,11 @@ ContentUi = Ext.extend(Ext.Panel, {
                 },
                 {
                     xtype: 'tbspacer',
-                    width: 10
+                    width: 5
                 },
                 {
                     xtype: 'trigger',
-                    width: 300,
+                    width: 280,
                     triggerClass: 'x-form-search-trigger',
                     id: 'adr-content-search-text'
                 },

@@ -515,7 +515,7 @@
                             "jsClass": "MySpacer2",
                             "snapToGrid": 10,
                             "userConfig": {
-                                "width": 10
+                                "width": 5
                             }
                         },
                         {
@@ -525,7 +525,7 @@
                             "snapToGrid": 10,
                             "userConfig": {
                                 "id": "adr-content-search-text",
-                                "width": 300,
+                                "width": 280,
                                 "triggerClass": "x-form-search-trigger"
                             }
                         },

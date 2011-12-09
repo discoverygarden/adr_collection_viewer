@@ -85,12 +85,18 @@ class ADRCollection {
     global $user; 
     module_load_include('inc', 'islandora_xacml_api', 'Xacml');
     module_load_include('inc', 'islandora_xacml_api', 'XacmlException');
-    try {
-      $xacml = Xacml::constructFromPid($this->pid);
-      $canManageInXacml = $xacml->managementRule->hasPermission($user->name, $user->roles);
+    
+    if($user->uid == 1) {
+      $canManageInXacml = TRUE;
     }
-    catch (XacmlException $e) {
-      $canManageInXacml = FALSE;
+    else {
+      try {
+        $xacml = Xacml::constructFromPid($this->pid);
+        $canManageInXacml = $xacml->managementRule->hasPermission($user->name, $user->roles);
+      }
+      catch (XacmlException $e) {
+        $canManageInXacml = FALSE;
+      }
     }
 
     $canAddNewObject = user_access("ingest new fedora objects") && $canManageInXacml;

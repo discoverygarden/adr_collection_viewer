@@ -11,35 +11,30 @@
  */
 
 CollectionMembers = Ext.extend(Ext.data.JsonStore, {
-    constructor: function(cfg) {
-        cfg = cfg || {};
-        CollectionMembers.superclass.constructor.call(this, Ext.apply({
-            storeId: 'CollectionMembers',
-            url: '/adrcollection/ajax/getCollectionMembers',
-            root: 'data',
-            baseParams: {
-                pid: decodeURIComponent(window.location.pathname.split('/')[
-                    3
-                ])
-            },
-            fields: [
-                {
-                    name: 'title'
-                },
-                {
-                    name: 'pid'
-                },
-                {
-                    name: 'description'
-                },
-                {
-                    name: 'url'
-                },
-                {
-                    name: 'img_url'
-                }
-            ]
-        }, cfg));
-    }
+  constructor: function(cfg) {
+    cfg = cfg || {};
+    CollectionMembers.superclass.constructor.call(this, Ext.apply({
+      storeId: 'CollectionMembers',
+      url: '/adrcollection/ajax/getCollectionMembers',
+      root: 'data',
+      baseParams: {
+        pid: decodeURIComponent(window.location.pathname.split('/')[3]),
+        sort: 'alpha-asc',
+        search_text: '',
+        filter: 'all'
+      },
+      fields: [{
+        name: 'title'
+      }, {
+        name: 'pid'
+      }, {
+        name: 'description'
+      }, {
+        name: 'url'
+      },{
+        name: 'img_url'
+      }]
+    }, cfg));
+  }
 });
 new CollectionMembers();

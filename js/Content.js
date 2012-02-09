@@ -34,6 +34,7 @@ Content = Ext.extend(ContentUi, {
             var pager = content_panel.getFooterToolbar();
             var lastOptions = pager.store.lastOptions;
             lastOptions.params.filter = filter[this.activeItem.text];
+            pager.store.setBaseParam('filter', lastOptions.params.filter);
             pager.store.reload(lastOptions);
         });
         
@@ -47,6 +48,7 @@ Content = Ext.extend(ContentUi, {
             var pager = content_panel.getFooterToolbar();
             var lastOptions = pager.store.lastOptions;
             lastOptions.params.sort = sort[this.activeItem.text];
+            pager.store.setBaseParam('sort', lastOptions.params.sort);
             pager.store.reload(lastOptions);
         });
 
@@ -54,6 +56,7 @@ Content = Ext.extend(ContentUi, {
             var pager = content_panel.getFooterToolbar();
             var lastOptions = pager.store.lastOptions;
             lastOptions.params.search_text = search_text.getValue();
+            pager.store.setBaseParam('search_text', lastOptions.params.search_text);
             pager.store.reload(lastOptions);
         };
 

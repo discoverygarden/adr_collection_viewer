@@ -120,9 +120,8 @@ class ADRCollection {
         "UserCollectionPermissions.datastream_canEditStream=" . ($canEditStream ? "true" : "false") . ";" .
         "UserCollectionPermissions.datastream_canDeleteStream=" . ($canDeleteStream ? "true" : "false") . ";";
     drupal_add_js($permissions_block, 'inline');
-    
     drupal_add_js("$path/js/IncludeFirst.js");
-    $title = $this->getCollectionTitle();
+    $title = ""; //$this->getCollectionTitle(); This line is causing duplicate collection titles to appear
     $description = $this->getCollectionDescription();
     $js = "ADRCollection.title = \"$title\";\n";
     $js .= "ADRCollection.description = \"$description\";";

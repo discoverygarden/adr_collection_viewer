@@ -24,7 +24,7 @@ ContentUi = Ext.extend(Ext.Panel, {
                 },
                 {
                     xtype: 'spacer',
-                    width: 10
+                    width: 2
                 },
                 {
                     xtype: 'cycle',
@@ -51,7 +51,7 @@ ContentUi = Ext.extend(Ext.Panel, {
                 },
                 {
                     xtype: 'spacer',
-                    width: 10
+                    width: 2
                 },
                 {
                     xtype: 'label',
@@ -59,7 +59,7 @@ ContentUi = Ext.extend(Ext.Panel, {
                 },
                 {
                     xtype: 'spacer',
-                    width: 10
+                    width: 2
                 },
                 {
                     xtype: 'cycle',
@@ -88,15 +88,15 @@ ContentUi = Ext.extend(Ext.Panel, {
                 },
                 {
                     xtype: 'tbspacer',
-                    width: 5
+                    width: 2
                 },
                 {
                     xtype: 'label',
-                    text: 'Search: '
+                    text: 'Search within titles: '
                 },
                 {
                     xtype: 'tbspacer',
-                    width: 5
+                    width: 2
                 },
                 {
                     xtype: 'trigger',
@@ -114,7 +114,7 @@ ContentUi = Ext.extend(Ext.Panel, {
                 },
                 {
                     xtype: 'tbseparator',
-                    width: 10,
+                    width: 2,
                     height: 22
                 },
                 {

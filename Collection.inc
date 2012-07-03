@@ -355,11 +355,71 @@ class Collection {
   }
 
   private function alpha_asc_sort($a, $b) {
-    return strcmp($a['title'], $b['title']);
+    $a_title = $a['title'];
+    $b_title = $b['title'];
+
+    $punc_marks = array(",",".","'","\"","!","?",":",";","(",")","<",">", "}", "{");
+
+    if (in_array(substr($a_title, 0, 1), $punc_marks)) {
+      for ($i=0;$i<strlen($a_title); $i++) {
+      $value = substr($a_title, $i, 1);
+       if (!in_array((substr($a_title, $i, 1)),$punc_marks)) {
+           break;
+        }
+        else {
+          $a_title = str_replace($value, '', $a_title, $count = 1);
+          $i--;
+        }
+      }
+    }
+
+    if (in_array(substr($b_title, 0, 1), $punc_marks)) {
+      for ($j=0;$j<strlen($b_title); $j++) {
+      $value = substr($b_title, $j, 1);
+       if (!in_array((substr($b_title, $j, 1)),$punc_marks)) {
+          break;
+        }
+        else {
+          $b_title = str_replace($value, '', $b_title, $count = 1);
+          $j--;
+        }
+      }
+    }
+    return strcmp(strtoupper($a_title), strtoupper($b_title));
   }
 
   private function alpha_desc_sort($a, $b) {
-    return strcmp($b['title'], $a['title']);
+    $a_title = $a['title'];
+    $b_title = $b['title'];
+
+    $punc_marks = array(",",".","'","\"","!","?",":",";","(",")","<",">", "}", "{");
+
+    if (in_array(substr($a_title, 0, 1), $punc_marks)) {
+      for ($i=0;$i<strlen($a_title); $i++) {
+        $value = substr($a_title, $i, 1);
+        if (!in_array((substr($a_title, $i, 1)),$punc_marks)) {
+          break;
+        }
+        else {
+          $a_title = str_replace($value, '', $a_title, $count = 1);
+          $i--;
+        }
+      }
+    }
+
+    if (in_array(substr($b_title, 0, 1), $punc_marks)) {
+      for ($j=0;$j<strlen($b_title); $j++) {
+        $value = substr($b_title, $j, 1);
+        if (!in_array((substr($b_title, $j, 1)),$punc_marks)) {
+          break;
+        }
+        else {
+          $b_title = str_replace($value, '', $b_title, $count = 1);
+          $j--;
+        }
+      }
+    }
+    return strcmp(strtoupper($a_title), strtoupper($b_title));
   }
 
   private function date_newest_sort($a, $b) {

@@ -353,73 +353,44 @@ class Collection {
         break;
     }
   }
-
+  
   private function alpha_asc_sort($a, $b) {
-    $a_title = $a['title'];
-    $b_title = $b['title'];
+    $a_title = self::strip_puncuation_marks($a['title']);
+    $b_title = self::strip_puncuation_marks($b['title']);
 
-    $punc_marks = array(",",".","'","\"","!","?",":",";","(",")","<",">", "}", "{");
-
-    if (in_array(substr($a_title, 0, 1), $punc_marks)) {
-      for ($i=0;$i<strlen($a_title); $i++) {
-      $value = substr($a_title, $i, 1);
-       if (!in_array((substr($a_title, $i, 1)),$punc_marks)) {
-           break;
-        }
-        else {
-          $a_title = str_replace($value, '', $a_title, $count = 1);
-          $i--;
-        }
-      }
-    }
-
-    if (in_array(substr($b_title, 0, 1), $punc_marks)) {
-      for ($j=0;$j<strlen($b_title); $j++) {
-      $value = substr($b_title, $j, 1);
-       if (!in_array((substr($b_title, $j, 1)),$punc_marks)) {
-          break;
-        }
-        else {
-          $b_title = str_replace($value, '', $b_title, $count = 1);
-          $j--;
-        }
-      }
-    }
     return strcmp(strtoupper($a_title), strtoupper($b_title));
   }
 
   private function alpha_desc_sort($a, $b) {
-    $a_title = $a['title'];
-    $b_title = $b['title'];
+    $a_title = self::strip_puncuation_marks($a['title']);
+    $b_title = self::strip_puncuation_marks($b['title']);
 
+    return strcmp(strtoupper($b_title), strtoupper($a_title));
+  }
+
+  /**
+   * Strips puncuation marks from the inputted string left to right until a
+   * character that is not in the puncuation array is encountered.
+   * 
+   * @param string $title_string
+   * @return string
+   */
+  private function strip_puncuation_marks($title_string) {
     $punc_marks = array(",",".","'","\"","!","?",":",";","(",")","<",">", "}", "{");
 
-    if (in_array(substr($a_title, 0, 1), $punc_marks)) {
-      for ($i=0;$i<strlen($a_title); $i++) {
-        $value = substr($a_title, $i, 1);
-        if (!in_array((substr($a_title, $i, 1)),$punc_marks)) {
-          break;
+    if (in_array(substr($title_string, 0, 1), $punc_marks)) {
+      for ($i=0;$i<strlen($title_string); $i++) {
+      $value = substr($title_string, $i, 1);
+       if (!in_array((substr($title_string, $i, 1)),$punc_marks)) {
+           break;
         }
         else {
-          $a_title = str_replace($value, '', $a_title, $count = 1);
+          $title_string = str_replace($value, '', $title_string, $count = 1);
           $i--;
         }
       }
     }
-
-    if (in_array(substr($b_title, 0, 1), $punc_marks)) {
-      for ($j=0;$j<strlen($b_title); $j++) {
-        $value = substr($b_title, $j, 1);
-        if (!in_array((substr($b_title, $j, 1)),$punc_marks)) {
-          break;
-        }
-        else {
-          $b_title = str_replace($value, '', $b_title, $count = 1);
-          $j--;
-        }
-      }
-    }
-    return strcmp(strtoupper($a_title), strtoupper($b_title));
+    return $title_string;
   }
 
   private function date_newest_sort($a, $b) {

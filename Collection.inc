@@ -358,14 +358,14 @@ class Collection {
     $a_title = self::strip_puncuation_marks($a['title']);
     $b_title = self::strip_puncuation_marks($b['title']);
 
-    return strcmp(strtoupper($a_title), strtoupper($b_title));
+    return strcmp(strtoupper(trim($a_title)), strtoupper(trim($b_title)));
   }
 
   private function alpha_desc_sort($a, $b) {
     $a_title = self::strip_puncuation_marks($a['title']);
     $b_title = self::strip_puncuation_marks($b['title']);
 
-    return strcmp(strtoupper($b_title), strtoupper($a_title));
+    return strcmp(strtoupper(trim($b_title)), strtoupper(trim($a_title)));
   }
 
   /**

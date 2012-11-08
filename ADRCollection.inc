@@ -85,7 +85,7 @@ class ADRCollection {
     global $user; 
     module_load_include('inc', 'islandora_xacml_api', 'Xacml');
     module_load_include('inc', 'islandora_xacml_api', 'XacmlException');
-    
+       
     if($user->uid == 1) {
       $canManageInXacml = TRUE;
     }
@@ -98,17 +98,45 @@ class ADRCollection {
         $canManageInXacml = FALSE;
       }
     }
-
-    $canAddNewObject = user_access("ingest new fedora objects") && $canManageInXacml;
-    $canAddNewCollection = user_access("ingest new fedora objects") && $canManageInXacml;
-    $canEditObjects = user_access("edit fedora meta data");
-    $canEditPermissions = user_access("Edit XACML Policies");
-    $canEditChildPermissions = user_access("Edit XACML Policies");
-    $canAddStream = user_access("add fedora datastreams");
-    $canDeleteObject = user_access("purge objects and datastreams");
-    $canDeleteStream = user_access("purge objects and datastreams");
-    $canEditStream = user_access("edit fedora meta data");
-
+    module_load_include('collection.inc', 'islandora_workflow');
+    module_load_include('permissions.inc', 'islandora_workflow');
+    
+    // Check to determine whether or not to 'grey' out the add object and add
+    // collection buttons.
+    $workflow_perm = TRUE;
+    
+    if (module_exists('islandora_workflow')) {
+      if (islandora_workflow_is_collection_workflow_tracked($this->pid)) {
+        if (islandora_workflow_user_collection_permission_check($this->pid)) {
+          $role = islandora_workflow_user_collection_permission_check($this->pid);
+          $workflow_perm = TRUE;
+        }
+        else {
+          $workflow_perm = FALSE;
+        }
+      }
+      else {
+        $workflow_perm = TRUE;
+      }
+    }
+        
+    if (fedora_repository_check_perm('ingest new fedora objects', $this->pid, $user) && $workflow_perm) {
+      $canAddNewObject = TRUE;
+      $canAddNewCollection = TRUE;
+    }
+    else {
+      $canAddNewObject = FALSE;
+      $canAddNewCollection = FALSE;
+    }
+    
+    $canEditObjects = fedora_repository_check_perm('edit fedora meta data', $this->pid, $user);
+    $canEditPermissions = fedora_repository_check_perm('Edit XACML Policies', $this->pid, $user);
+    $canEditChildPermissions = fedora_repository_check_perm('Edit XACML Policies', $this->pid, $user);
+    $canAddStream = fedora_repository_check_perm('add fedora datastreams', $this->pid, $user);
+    $canDeleteObject = fedora_repository_check_perm('purge objects and datastreams', $this->pid, $user);
+    $canDeleteStream = fedora_repository_check_perm('purge objects and datastreams', $this->pid, $user);
+    $canEditStream = fedora_repository_check_perm('edit fedora meta data', $this->pid, $user);
+ 
     $permissions_block =
         "UserCollectionPermissions.content_canAddNewObject=" . ($canAddNewObject ? "true" : "false") . ";" .
         "UserCollectionPermissions.content_canAddNewCollection=" . ($canAddNewCollection ? "true" : "false") . ";" .

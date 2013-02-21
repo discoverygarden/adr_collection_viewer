@@ -35,7 +35,7 @@ class Thumbnail {
   /**
    * The default icon for a datastream. This is used when there is no thumbnail associated with the datastream.
    * The thumbnail will be choosen based on the datastreams mime type.
-   * 
+   *
    * @var array
    */
   protected $defaultMimeIcons = array(
@@ -149,7 +149,7 @@ class Thumbnail {
   /**
    * Gets the RELS-INT datastream as a SimpleXMLElement.
    *
-   * @return SimpleXMLElement 
+   * @return SimpleXMLElement
    */
   private function getRelsInt() {
     $rels_int = $this->item->get_datastream_dissemination("RELS-INT");
@@ -161,7 +161,7 @@ class Thumbnail {
 
   /**
    * Gets the url from this datastreams dsid, if it exists.
-   * 
+   *
    * @global string $base_url
    * @return string
    */
@@ -187,4 +187,24 @@ class Thumbnail {
     return "$base_url/$default_image_path/$image";
   }
 
+  /**
+   * Gets the icon url for objects that have no TN DS and no hasThumbnail rel in rels-int.
+   * Currently, this should only be objects with only audio attached to it.
+   *
+   * @return string
+   */
+  public function getDefaultIconUrlRelsInt() {
+    $rels_int = $this->relsInt;
+    if($rels_int != '') {
+      $path = "/rdf:RDF/rdf:Description[@rdf:about='info:fedora/{$this->item->pid}/{$this->dsid}']/";
+      $ogg = $rels_int->xpath($path . "coal:hasOGG");
+      $mp3 = $rels_int->xpath($path . "coal:hasMP3");
+      if(count($ogg) > 0 || count($mp3) > 0) {
+        return $base_url . '/' . drupal_get_path('module', 'adr_basic_viewer') . '/images/mime/' . $this->defaultMimeIcons['audio/mp3'];
+      }
+    }
+
+    return FALSE;
+  }
 }
+

@@ -455,7 +455,7 @@ class Collection {
         foreach ($datastreams as $dsid => $attr) {
           module_load_include('inc', 'adr_collection_viewer', 'Thumbnail');
           $thumbnail = new Thumbnail($item, $dsid);
-          $icon = $thumbnail->getDefaultIconUrlRelsInt();
+          $icon = $thumbnail->getDefaultObjectIconUrlRelsInt();
           if ($icon != '') {
             $result['img_url'] = $icon;
             break;

@@ -193,7 +193,7 @@ class Thumbnail {
    *
    * @return string
    */
-  public function getDefaultIconUrlRelsInt() {
+  public function getDefaultObjectIconUrlRelsInt() {
     $rels_int = $this->relsInt;
     if($rels_int != '') {
       $path = "/rdf:RDF/rdf:Description[@rdf:about='info:fedora/{$this->item->pid}/{$this->dsid}']/";

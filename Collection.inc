@@ -13,7 +13,7 @@ class Collection {
   const xmlns = 'http://www.w3.org/2000/xmlns/';
   /**
    * The pid of this Collection.
-   * 
+   *
    * @var string
    */
   protected $pid;
@@ -240,7 +240,7 @@ class Collection {
   }
 
   /**
-   * 
+   *
    */
   private function isCollection(&$fedora_item) {
     $model_pid = $this->getModelPid($fedora_item);
@@ -283,10 +283,12 @@ class Collection {
       $result = $xpath->query('/mods:mods/mods:titleInfo[not(@type)]/mods:title');
       if ($result && $result->length > 0) {
         $title = $result->item(0)->textContent;
+        /*
         $result = $xpath->query("/mods:mods/mods:titleInfo[@type='alternative']/mods:title");
         if ($result && $result->length > 0) {
           $title = "$title: {$result->item(0)->textContent}";
         }
+         */
       }
       $result = $xpath->query('/mods:mods/mods:abstract');
       if ($result && $result->length > 0) {
@@ -353,7 +355,7 @@ class Collection {
         break;
     }
   }
-  
+
   private function alpha_asc_sort($a, $b) {
     $a_title = self::strip_puncuation_marks($a['title']);
     $b_title = self::strip_puncuation_marks($b['title']);
@@ -371,7 +373,7 @@ class Collection {
   /**
    * Strips puncuation marks from the inputted string left to right until a
    * character that is not in the puncuation array is encountered.
-   * 
+   *
    * @param string $title_string
    * @return string
    */
@@ -435,12 +437,12 @@ class Collection {
       $description = "&nbsp;";
       if ($info = $this->getTitleAndDescriptionFromMods($item)) {
         list($mods_title, $mods_description) = $info;
-        //$title = $mods_title != '' ? $mods_title : $title;
+        //$result['title'] = $mods_title != '' ? $mods_title : $title;
         $result['description'] = $mods_description != '' ? $mods_description : $description;
       }
       else if ($info = $this->getTitleAndDescriptionFromDC($item)) {
         list($dc_title, $dc_description) = $info;
-        //$title = $mods_title != '' ? $mods_title : $title;
+        //$result['title'] = $dc_title != '' ? $dc_title : $title;
         $result['description'] = $dc_description != '' ? $dc_description : $description;
       }
       $result['url'] = "$base_url/fedora/repository/$pid";
@@ -448,7 +450,21 @@ class Collection {
         $result['img_url'] = "$base_url/fedora/repository/$pid/TN";
       }
       else {
-        $result['img_url'] = "$base_url/" . drupal_get_path('module', 'adr_collection_viewer') . '/images/object.png';
+
+        $datastreams = $item->datastreams;
+        foreach ($datastreams as $dsid => $attr) {
+          module_load_include('inc', 'adr_collection_viewer', 'Thumbnail');
+          $thumbnail = new Thumbnail($item, $dsid);
+          $icon = $thumbnail->getDefaultObjectIconUrlRelsInt();
+          if ($icon != '') {
+            $result['img_url'] = $icon;
+            break;
+          }
+        }
+
+        if(!$icon) {
+          $result['img_url'] = "$base_url/" . drupal_get_path('module', 'adr_collection_viewer') . '/images/object.png';
+        }
       }
       if ($parent_model == 'islandora:collectionCModel') {
         $result['img_url'] = "$base_url/" . drupal_get_path('module', 'adr_collection_viewer') . '/images/collection.png';
@@ -489,7 +505,7 @@ class Collection {
 
   /**
    * Get the label of this collection.
-   * 
+   *
    * @return string
    */
   public function getLabel() {
@@ -538,7 +554,7 @@ class Collection {
   }
 
   /**
-   * 
+   *
    */
   private function getMetadataXPath() {
     if (empty($this->metadataPath)) {
